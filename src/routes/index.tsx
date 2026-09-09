@@ -125,18 +125,15 @@ function Board() {
 
   return (
     <main className="min-h-screen">
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6">
-          <div className="flex items-center gap-3">
-            <span className="grid size-11 place-items-center rounded-xl bg-primary text-primary-foreground">
-              <Compass className="size-6" aria-hidden />
-            </span>
-            <div>
-              <h1 className="text-2xl font-semibold">Project Partner Compass</h1>
-              <p className="text-sm text-muted-foreground">
-                Koordination von Teilprojekten mit internen und externen Partnerorganisationen
-              </p>
-            </div>
+      <header className="border-b border-border bg-card px-6 py-8 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-3xl font-extrabold text-foreground">
+              Projekt-Koordination
+            </h1>
+            <p className="mt-1 text-muted-foreground">
+              Koordination von Teilprojekten mit internen und externen Partnerorganisationen
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Reiter />
@@ -151,26 +148,11 @@ function Board() {
             </Button>
           </div>
         </div>
+
+        <Projektsituation projekte={projekte} />
       </header>
 
-      <div className="mx-auto max-w-7xl space-y-6 px-6 py-6">
-        <Projektsituation projekte={projekte} />
-
-        <div className="grid gap-4 sm:grid-cols-3">
-
-          <Kachel icon={<LayoutGrid className="size-5" aria-hidden />} wert={kennzahlen.gesamt} label="Projekte gesamt" />
-          <Kachel
-            icon={<CalendarClock className="size-5" aria-hidden />}
-            wert={kennzahlen.fristZweiWochen}
-            label="Frist in den nächsten 2 Wochen"
-          />
-          <Kachel
-            icon={<FileWarning className="size-5" aria-hidden />}
-            wert={kennzahlen.berichtspflicht}
-            label="Berichtspflicht fällig"
-          />
-        </div>
-
+      <div className="space-y-6 px-6 py-6 lg:px-8">
         <FristAlarm
           projekte={projekte}
           onKarteOeffnen={(karte) => {
@@ -178,6 +160,8 @@ function Board() {
             setDialogOffen(true);
           }}
         />
+
+
 
 
         {error ? (
