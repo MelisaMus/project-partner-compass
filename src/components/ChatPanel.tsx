@@ -22,6 +22,7 @@ export function ChatPanel() {
   const frageStellen = useServerFn(boardFrage);
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
+  const [geladen, setGeladen] = useState(false);
 
   // Gespräch bleibt beim Wechsel zwischen Board, Übersicht und Chat erhalten.
   useEffect(() => {
@@ -31,15 +32,19 @@ export function ChatPanel() {
     } catch {
       /* ignorieren */
     }
+    setGeladen(true);
   }, []);
 
   useEffect(() => {
+    if (!geladen) return;
     try {
       window.localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(verlauf.slice(-40)));
     } catch {
       /* ignorieren */
     }
-  }, [verlauf]);
+  }, [verlauf, geladen]);
+
+
 
 
   const mutation = useMutation({
