@@ -173,7 +173,6 @@ function Board() {
           }}
         />
 
-        <ChatPanel />
 
         {error ? (
           <p className="rounded-lg bg-ampel-rot px-4 py-3 text-sm text-ampel-rot-foreground">

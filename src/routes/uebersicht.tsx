@@ -130,9 +130,7 @@ function Uebersicht() {
               </p>
             </div>
           </div>
-          <Button asChild variant="outline">
-            <Link to="/">Zum Board</Link>
-          </Button>
+          <Reiter />
         </div>
       </header>
 
