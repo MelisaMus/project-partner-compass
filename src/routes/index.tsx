@@ -48,27 +48,6 @@ export const Route = createFileRoute("/")({
 });
 
 
-function Kachel({
-  icon,
-  wert,
-  label,
-}: {
-  icon: React.ReactNode;
-  wert: number;
-  label: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-card">
-      <span className="grid size-10 place-items-center rounded-lg bg-secondary text-secondary-foreground">
-        {icon}
-      </span>
-      <span>
-        <span className="block text-2xl font-semibold leading-none">{wert}</span>
-        <span className="text-xs text-muted-foreground">{label}</span>
-      </span>
-    </div>
-  );
-}
 
 function Board() {
   const queryClient = useQueryClient();
