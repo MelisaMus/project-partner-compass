@@ -226,13 +226,15 @@ function Board() {
                             setAktuelleKarte(karte);
                             setDialogOffen(true);
                           }}
-                          className="cursor-pointer rounded-lg border border-border bg-card p-3 shadow-card transition-shadow hover:shadow-md"
+                          className="cursor-pointer rounded-2xl border border-border bg-card p-4 shadow-card transition-shadow hover:shadow-md"
                         >
-                          <h3 className="text-sm font-semibold leading-snug">{karte.titel}</h3>
-                          <p className="mt-1 text-xs text-muted-foreground">
+                          <h3 className="font-display text-[15px] font-bold leading-snug text-foreground">
+                            {karte.titel}
+                          </h3>
+                          <p className="mt-1.5 text-xs font-medium text-muted-foreground">
                             {karte.partnerorganisation || "Partner offen"}
                           </p>
-                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                          <div className="mt-3 flex flex-wrap items-center gap-1.5">
                             <span
                               className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}
                             >
