@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoardsRouteImport } from './routes/boards'
 import { Route as ChatRouteImport } from './routes/chat'
+import { Route as ExportRouteImport } from './routes/export'
 import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as TermineRouteImport } from './routes/termine'
@@ -31,6 +32,11 @@ const BoardsRoute = BoardsRouteImport.update({
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
   path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExportRoute = ExportRouteImport.update({
+  id: '/export',
+  path: '/export',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FristenRoute = FristenRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/boards'
     | '/chat'
+    | '/export'
     | '/fristen'
     | '/partner'
     | '/termine'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/boards'
     | '/chat'
+    | '/export'
     | '/fristen'
     | '/partner'
     | '/termine'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/boards'
     | '/chat'
+    | '/export'
     | '/fristen'
     | '/partner'
     | '/termine'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BoardsRoute: typeof BoardsRoute
   ChatRoute: typeof ChatRoute
+  ExportRoute: typeof ExportRoute
   FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
   TermineRoute: typeof TermineRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/chat'
       fullPath: '/chat'
       preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/export': {
+      id: '/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof ExportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fristen': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BoardsRoute: BoardsRoute,
   ChatRoute: ChatRoute,
+  ExportRoute: ExportRoute,
   FristenRoute: FristenRoute,
   PartnerRoute: PartnerRoute,
   TermineRoute: TermineRoute,
