@@ -30,14 +30,34 @@ npm run dev
 
 ## Project Partner Compass
 
-Kanban-Board mit Chat-Abfrage zur Koordination von Teilprojekten mit mehreren
+Kanban-Board mit Chat-Abfrage zur Koordination von Teilprojekten mit internen und
 externen Partnerorganisationen und parallelen Fristen.
 
+### Bereiche der App
+
+Die Navigation ist in fünf Bereiche gegliedert (verwandte Seiten liegen als
+Unterreiter zusammen):
+
+| Bereich | Seiten | Inhalt |
+| --- | --- | --- |
+| Board | `/`, `/boards` | Kanban-Board mit Statusspalten; zusätzliche Boards/Projektkategorien |
+| Übersicht | `/uebersicht`, `/partner` | Projektliste gruppiert nach Status, Partner oder Frist inkl. Detailpanel, Dokumenten und Chat-Feld; Auswertung pro Partnerorganisation |
+| Termine & Fristen | `/termine`, `/fristen` | Meilenstein-Planer pro Projekt; Alarm für überfällige und bald fällige Fristen |
+| Chat | `/chat` | Fragen zum Projektstand mit Verlauf |
+| Berichte | `/wochenbericht`, `/export` | Wochenbericht-Vorschau (montags 07:00 geplant); PDF-Export einzelner Projekte und der Gesamtliste |
+
+### Kernlogik
+
 - Board-Spalten: Anbahnung, In Abstimmung, Laufend, Berichtspflicht fällig, Abgeschlossen
-- Fristen-Ampel: grün > 4 Wochen, gelb 1–4 Wochen, rot < 1 Woche (auch überfällig)
+- Fristen-Ampel: grün > 4 Wochen, gelb 1–4 Wochen, rot < 1 Woche (auch überfällig);
+  Vorlaufzeit und Warnfarbe des Alarms sind einstellbar
 - Statusabfrage: Die Frage wird gemeinsam mit allen aktuellen Kartendaten als
   strukturierter Kontext an ein Sprachmodell geschickt (keine Vektorsuche).
-- Tests der Fristen-Logik: `bun run test` (Vitest, `src/lib/fristen.test.ts`)
+- Datenmodell (Lovable Cloud / Postgres): `projekte`, `meilensteine`, `boards`,
+  `dokumente`, `kontakte`; Dateien liegen im privaten Bucket `projekt-dokumente`.
+- Board, Übersicht und Termine teilen dieselben Daten und aktualisieren sich
+  gegenseitig live.
+- Tests: `bun run test` (Vitest) für Fristen-, Wochenbericht-, PDF- und Kennzahlenlogik
 
 ### Hinweise
 
@@ -45,5 +65,7 @@ externen Partnerorganisationen und parallelen Fristen.
   erfunden; es sind keine echten Institutionen abgebildet.
 - Das Tool ist als **generisches Konzept für Multi-Partner-Projektkoordination**
   gedacht und nicht an eine bestimmte Institution gebunden.
-- In diesem ersten Schritt gibt es noch keine Nutzerverwaltung/Anmeldung; die
-  Karten sind daher für alle Besucher lesbar und bearbeitbar.
+- Es gibt derzeit noch keine Nutzerverwaltung/Anmeldung (bewusst auf später
+  verschoben); die Karten sind daher für alle Besucher lesbar und bearbeitbar.
+- Der automatische E-Mail-Versand des Wochenberichts ist vorbereitet, aber noch
+  nicht aktiv – dafür wird eine eigene Absender-Domain benötigt.
