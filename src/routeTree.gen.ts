@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as TermineRouteImport } from './routes/termine'
 import { Route as UebersichtRouteImport } from './routes/uebersicht'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermineRoute = TermineRouteImport.update({
+  id: '/termine',
+  path: '/termine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UebersichtRoute = UebersichtRouteImport.update({
   id: '/uebersicht',
   path: '/uebersicht',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/partner': typeof PartnerRoute
+  '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/partner': typeof PartnerRoute
+  '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/partner': typeof PartnerRoute
+  '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/partner' | '/uebersicht'
+  fullPaths: '/' | '/chat' | '/partner' | '/termine' | '/uebersicht'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/partner' | '/uebersicht'
-  id: '__root__' | '/' | '/chat' | '/partner' | '/uebersicht'
+  to: '/' | '/chat' | '/partner' | '/termine' | '/uebersicht'
+  id: '__root__' | '/' | '/chat' | '/partner' | '/termine' | '/uebersicht'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   PartnerRoute: typeof PartnerRoute
+  TermineRoute: typeof TermineRoute
   UebersichtRoute: typeof UebersichtRoute
 }
 
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/termine': {
+      id: '/termine'
+      path: '/termine'
+      fullPath: '/termine'
+      preLoaderRoute: typeof TermineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/uebersicht': {
       id: '/uebersicht'
       path: '/uebersicht'
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   PartnerRoute: PartnerRoute,
+  TermineRoute: TermineRoute,
   UebersichtRoute: UebersichtRoute,
 }
 export const routeTree = rootRouteImport
