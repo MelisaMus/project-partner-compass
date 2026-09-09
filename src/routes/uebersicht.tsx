@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { ChatPanel } from "@/components/ChatPanel";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
