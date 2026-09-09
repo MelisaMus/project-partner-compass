@@ -75,6 +75,7 @@ function Kachel({
 function Board() {
   const queryClient = useQueryClient();
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
+  const { data: alleMeilensteine } = useQuery(meilensteineQueryOptions);
 
   const [dialogOffen, setDialogOffen] = useState(false);
   const [aktuelleKarte, setAktuelleKarte] = useState<Projekt | null>(null);
