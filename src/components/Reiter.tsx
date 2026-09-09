@@ -8,6 +8,7 @@ const REITER = [
   { to: "/termine", label: "Termine" },
   { to: "/chat", label: "Chat" },
   { to: "/fristen", label: "Fristen" },
+  { to: "/wochenbericht", label: "Wochenbericht" },
 ] as const;
 
 /** Reiter-Navigation zwischen Board, Übersicht und Chat. */

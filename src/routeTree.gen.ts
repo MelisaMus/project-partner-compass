@@ -16,6 +16,7 @@ import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as TermineRouteImport } from './routes/termine'
 import { Route as UebersichtRouteImport } from './routes/uebersicht'
+import { Route as WochenberichtRouteImport } from './routes/wochenbericht'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const UebersichtRoute = UebersichtRouteImport.update({
   path: '/uebersicht',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WochenberichtRoute = WochenberichtRouteImport.update({
+  id: '/wochenbericht',
+  path: '/wochenbericht',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
+  '/wochenbericht': typeof WochenberichtRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
+  '/wochenbericht': typeof WochenberichtRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
+  '/wochenbericht': typeof WochenberichtRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/termine'
     | '/uebersicht'
+    | '/wochenbericht'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/termine'
     | '/uebersicht'
+    | '/wochenbericht'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/termine'
     | '/uebersicht'
+    | '/wochenbericht'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   PartnerRoute: typeof PartnerRoute
   TermineRoute: typeof TermineRoute
   UebersichtRoute: typeof UebersichtRoute
+  WochenberichtRoute: typeof WochenberichtRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UebersichtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wochenbericht': {
+      id: '/wochenbericht'
+      path: '/wochenbericht'
+      fullPath: '/wochenbericht'
+      preLoaderRoute: typeof WochenberichtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnerRoute: PartnerRoute,
   TermineRoute: TermineRoute,
   UebersichtRoute: UebersichtRoute,
+  WochenberichtRoute: WochenberichtRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
