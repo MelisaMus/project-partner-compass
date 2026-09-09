@@ -8,6 +8,8 @@ import { FristAlarm } from "@/components/FristAlarm";
 import { KartenDialog } from "@/components/KartenDialog";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
+import { Projektsituation } from "@/components/Projektsituation";
+
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
