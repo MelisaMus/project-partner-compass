@@ -73,9 +73,9 @@ function TerminePlanerSeite() {
               <CalendarDays className="size-6" aria-hidden />
             </span>
             <div>
-              <h1 className="text-2xl font-semibold">Terminplaner</h1>
+              <h1 className="text-2xl font-semibold">Termine & Fristen</h1>
               <p className="text-sm text-muted-foreground">
-                Eigene Termine je Projekt – z. B. Kick-off oder Berichtsfrist
+                Termine je Projekt planen – Kick-off, Berichtsfrist – und alle nahen Fristen im Blick
               </p>
             </div>
           </div>
@@ -90,6 +90,13 @@ function TerminePlanerSeite() {
           </p>
         ) : null}
         {isLoading ? <p className="text-sm text-muted-foreground">Lädt…</p> : null}
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Frist-Alarm</h2>
+          <FristAlarmPanel />
+        </section>
+
+
 
         <section className="rounded-xl border border-border bg-card p-5 shadow-card">
           <h2 className="text-lg font-semibold">Nächste Termine</h2>
