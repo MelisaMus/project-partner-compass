@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoardsRouteImport } from './routes/boards'
 import { Route as ChatRouteImport } from './routes/chat'
+import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as TermineRouteImport } from './routes/termine'
 import { Route as UebersichtRouteImport } from './routes/uebersicht'
@@ -29,6 +30,11 @@ const BoardsRoute = BoardsRouteImport.update({
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
   path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FristenRoute = FristenRouteImport.update({
+  id: '/fristen',
+  path: '/fristen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartnerRoute = PartnerRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
@@ -68,20 +76,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/boards': typeof BoardsRoute
   '/chat': typeof ChatRoute
+  '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
   '/termine': typeof TermineRoute
   '/uebersicht': typeof UebersichtRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/boards' | '/chat' | '/partner' | '/termine' | '/uebersicht'
+  fullPaths:
+    | '/'
+    | '/boards'
+    | '/chat'
+    | '/fristen'
+    | '/partner'
+    | '/termine'
+    | '/uebersicht'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/boards' | '/chat' | '/partner' | '/termine' | '/uebersicht'
+  to:
+    | '/'
+    | '/boards'
+    | '/chat'
+    | '/fristen'
+    | '/partner'
+    | '/termine'
+    | '/uebersicht'
   id:
     | '__root__'
     | '/'
     | '/boards'
     | '/chat'
+    | '/fristen'
     | '/partner'
     | '/termine'
     | '/uebersicht'
@@ -91,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BoardsRoute: typeof BoardsRoute
   ChatRoute: typeof ChatRoute
+  FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
   TermineRoute: typeof TermineRoute
   UebersichtRoute: typeof UebersichtRoute
@@ -117,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/chat'
       fullPath: '/chat'
       preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fristen': {
+      id: '/fristen'
+      path: '/fristen'
+      fullPath: '/fristen'
+      preLoaderRoute: typeof FristenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partner': {
@@ -147,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BoardsRoute: BoardsRoute,
   ChatRoute: ChatRoute,
+  FristenRoute: FristenRoute,
   PartnerRoute: PartnerRoute,
   TermineRoute: TermineRoute,
   UebersichtRoute: UebersichtRoute,
