@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, CalendarClock, Compass, ListTree } from "lucide-react";
+import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Reiter } from "@/components/Reiter";
@@ -77,29 +77,82 @@ function gruppen(projekte: Projekt[], modus: Gruppierung): { titel: string; kart
   }));
 }
 
+function fristText(frist: string | null): string {
+  if (!frist) return fristLabel(frist);
+  const datum = new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
+  return `${datum} · ${fristLabel(frist)}`;
+}
+
+function DetailFeld({ label, wert }: { label: string; wert: string | null }) {
+  return (
+    <div>
+      <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">{label}</dt>
+      <dd className="text-sm">{wert && wert.trim() ? wert : "–"}</dd>
+    </div>
+  );
+}
+
 function Zeile({ projekt }: { projekt: Projekt }) {
   const ampel = fristAmpel(projekt.naechste_frist);
+  const [offen, setOffen] = useState(false);
+  const detailId = `details-${projekt.id}`;
+
   return (
-    <li className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2.5">
-      <div className="min-w-0">
-        <p className="text-sm font-semibold leading-snug">{projekt.titel}</p>
-        <p className="text-xs text-muted-foreground">
-          {[
-            projekt.partnerorganisation || "Partner offen",
-            projekt.status,
-            projekt.themenbereich || null,
-            projekt.verantwortliche_person || null,
-            projekt.foerdermittelbezug || null,
-          ]
-            .filter(Boolean)
-            .join(" · ")}
-        </p>
-      </div>
-      <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}>
-        {projekt.naechste_frist
-          ? `${new Date(`${projekt.naechste_frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE")} · ${fristLabel(projekt.naechste_frist)}`
-          : fristLabel(projekt.naechste_frist)}
-      </span>
+    <li className="rounded-lg border border-border bg-card">
+      <button
+        type="button"
+        onClick={() => setOffen((alt) => !alt)}
+        aria-expanded={offen}
+        aria-controls={detailId}
+        className="flex w-full flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-left"
+      >
+        <span className="flex min-w-0 items-start gap-2">
+          <ChevronRight
+            className={`mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform ${offen ? "rotate-90" : ""}`}
+            aria-hidden
+          />
+          <span className="min-w-0">
+            <span className="block text-sm font-semibold leading-snug">{projekt.titel}</span>
+            <span className="block text-xs text-muted-foreground">
+              {[
+                projekt.partnerorganisation || "Partner offen",
+                projekt.status,
+                projekt.themenbereich || null,
+                projekt.verantwortliche_person || null,
+                projekt.foerdermittelbezug || null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+          </span>
+        </span>
+        <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}>
+          {fristText(projekt.naechste_frist)}
+        </span>
+      </button>
+
+      {offen ? (
+        <div id={detailId} className="border-t border-border bg-surface px-3 py-3">
+          <dl className="grid gap-3 sm:grid-cols-2">
+            <DetailFeld label="Titel" wert={projekt.titel} />
+            <DetailFeld label="Partnerorganisation" wert={projekt.partnerorganisation} />
+            <DetailFeld label="Partnertyp" wert={projekt.partner_typ} />
+            <DetailFeld label="Status" wert={projekt.status} />
+            <DetailFeld label="Nächste Frist" wert={fristText(projekt.naechste_frist)} />
+            <DetailFeld label="Themenbereich" wert={projekt.themenbereich} />
+            <DetailFeld label="Verantwortlich" wert={projekt.verantwortliche_person} />
+            <DetailFeld label="Fördermittelbezug" wert={projekt.foerdermittelbezug} />
+          </dl>
+          <div className="mt-3">
+            <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">
+              Kurzbeschreibung
+            </dt>
+            <dd className="whitespace-pre-line text-sm">
+              {projekt.kurzbeschreibung?.trim() || "Keine Beschreibung hinterlegt."}
+            </dd>
+          </div>
+        </div>
+      ) : null}
     </li>
   );
 }
