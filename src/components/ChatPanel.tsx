@@ -22,7 +22,8 @@ export function ChatPanel() {
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
 
   const mutation = useMutation({
-    mutationFn: async (frage: string) => frageStellen({ data: { frage } }),
+    mutationFn: async (frage: string) =>
+      frageStellen({ data: { frage, verlauf: verlauf.slice(-10) } }),
     onSuccess: (ergebnis) => {
       setVerlauf((alt) => [...alt, { rolle: "antwort", text: ergebnis.antwort }]);
     },
@@ -52,7 +53,8 @@ export function ChatPanel() {
         Status abfragen
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Fragen zum aktuellen Stand – beantwortet aus den Karten dieses Boards.
+        Fragen zum aktuellen Stand – beantwortet von einer KI auf Basis der Karten dieses Boards,
+        Rückfragen im Gespräch möglich.
       </p>
 
       <div className="mt-4 space-y-3">
@@ -70,7 +72,7 @@ export function ChatPanel() {
         ))}
         {mutation.isPending ? (
           <div className="max-w-[95%] rounded-lg bg-surface px-3 py-2 text-sm text-muted-foreground">
-            Prüfe die Board-Daten…
+            Denkt nach…
           </div>
         ) : null}
       </div>

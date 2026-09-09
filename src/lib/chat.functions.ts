@@ -2,7 +2,18 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
-const FrageSchema = z.object({ frage: z.string().min(1).max(1000) });
+const FrageSchema = z.object({
+  frage: z.string().min(1).max(2000),
+  verlauf: z
+    .array(
+      z.object({
+        rolle: z.enum(["frage", "antwort"]),
+        text: z.string().min(1).max(8000),
+      }),
+    )
+    .max(20)
+    .optional(),
+});
 
 type Karte = {
   titel: string;
@@ -72,17 +83,28 @@ export const boardFrage = createServerFn({ method: "POST" })
     const kontext =
       (karten as Karte[] | null)?.map((k) => kontextZeile(k, heute)).join("\n") ?? "";
 
-    const systemPrompt = [
-      "Du bist der Assistent des Kanban-Boards 'Partner Compass' für die Koordination von Projekten mit externen Partnerorganisationen.",
+    const instructions = [
+      "Du bist der Assistent des Kanban-Boards 'Partner Compass' für die Koordination von Projekten mit mehreren externen Partnerorganisationen.",
       `Heutiges Datum: ${heute.toISOString().slice(0, 10)}.`,
-      "Antworte kurz, klar und auf Deutsch. Nenne die relevanten Karten immer mit Titel und Status.",
-      "Nutze ausschließlich die folgenden Board-Daten. Wenn die Daten die Frage nicht beantworten, sage das offen.",
+      "Antworte immer auf Deutsch, kurz und klar; nutze Listen, wenn mehrere Projekte relevant sind.",
+      "Wenn die Frage das Board betrifft, beantworte sie ausschließlich anhand der Board-Daten und nenne die relevanten Karten mit Titel und Status. Erfinde keine Karten, Fristen oder Partner.",
+      "Wenn die Board-Daten die Frage nicht abdecken, sage das offen und beantworte die Frage danach mit deinem allgemeinen Wissen zu Projektkoordination, Fristenmanagement und Zusammenarbeit mit externen Partnern.",
+      "Bei allgemeinen Fragen ohne Bezug zum Board antworte einfach hilfreich und weise nicht auf die Board-Daten hin.",
       "",
       "BOARD-DATEN:",
       kontext || "(keine Karten vorhanden)",
     ].join("\n");
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const eingaben = [
+      ...(data.verlauf ?? []).map((n) =>
+        n.rolle === "frage"
+          ? { role: "user" as const, content: [{ type: "input_text" as const, text: n.text }] }
+          : { role: "assistant" as const, content: [{ type: "output_text" as const, text: n.text }] },
+      ),
+      { role: "user" as const, content: [{ type: "input_text" as const, text: data.frage }] },
+    ];
+
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,25 +112,73 @@ export const boardFrage = createServerFn({ method: "POST" })
         "X-Lovable-AIG-SDK": "fetch",
       },
       body: JSON.stringify({
-        model: "google/gemini-3.8-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: data.frage },
-        ],
+        model: "openai/gpt-6-astra",
+        instructions,
+        input: eingaben,
+        stream: true,
+        store: false,
+        reasoning: { effort: "low" },
       }),
     });
 
-    if (!res.ok) {
-      const text = await res.text();
+    if (!res.ok || !res.body) {
+      const text = res.body ? await res.text() : "";
       if (res.status === 429) throw new Error("Zu viele Anfragen – bitte kurz warten und erneut fragen.");
       if (res.status === 402)
         throw new Error("Das KI-Guthaben dieses Arbeitsbereichs ist aufgebraucht.");
+      if (res.status === 403)
+        throw new Error("Die KI-Nutzung ist für diesen Arbeitsbereich gesperrt.");
       throw new Error(`Die Anfrage an die KI ist fehlgeschlagen (${res.status}): ${text.slice(0, 300)}`);
     }
 
-    const payload = (await res.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
+    // Streaming-Antwort (SSE) serverseitig einsammeln und als Ganzes zurückgeben.
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let puffer = "";
+    let antwort = "";
+    let fehler = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      puffer += decoder.decode(value, { stream: true });
+      const zeilen = puffer.split("\n");
+      puffer = zeilen.pop() ?? "";
+      for (const zeile of zeilen) {
+        if (!zeile.startsWith("data:")) continue;
+        const rohdaten = zeile.slice(5).trim();
+        if (!rohdaten || rohdaten === "[DONE]") continue;
+        try {
+          const ereignis = JSON.parse(rohdaten) as {
+            type?: string;
+            delta?: string;
+            response?: { output_text?: string | string[]; error?: { message?: string } };
+            message?: string;
+            error?: { message?: string };
+          };
+          if (ereignis.type === "response.output_text.delta" && ereignis.delta) {
+            antwort += ereignis.delta;
+          } else if (ereignis.type === "response.completed" && !antwort) {
+            const gesamt = ereignis.response?.output_text;
+            if (Array.isArray(gesamt)) antwort = gesamt.join("");
+            else if (typeof gesamt === "string") antwort = gesamt;
+          } else if (ereignis.type === "error" || ereignis.type === "response.failed") {
+            fehler =
+              ereignis.error?.message ?? ereignis.response?.error?.message ?? ereignis.message ?? "";
+          }
+        } catch {
+          // unvollständiges oder unbekanntes Ereignis überspringen
+        }
+      }
+    }
+
+    if (!antwort.trim() && fehler) {
+      throw new Error(`Die Anfrage an die KI ist fehlgeschlagen: ${fehler.slice(0, 300)}`);
+    }
+
+    return {
+      antwort:
+        antwort.trim() ||
+        "Die KI hat keine Antwort formuliert. Bitte stelle die Frage noch einmal etwas konkreter.",
     };
-    const antwort = payload.choices?.[0]?.message?.content?.trim();
-    return { antwort: antwort || "Dazu finde ich in den Board-Daten keine Antwort." };
   });
