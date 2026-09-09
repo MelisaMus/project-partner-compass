@@ -1,4 +1,4 @@
-import type { FristAmpel } from "@/lib/fristen";
+import { fristLabel, type FristAmpel } from "@/lib/fristen";
 
 /** Einheitliche Ampelfarben für Fristen (Board, Übersicht, Termine, Berichte). */
 export const AMPEL_KLASSEN: Record<FristAmpel, string> = {
@@ -23,4 +23,10 @@ export function datumText(wert: string | null | undefined, leer = "–"): string
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+/** Frist als "TT.MM.JJJJ · in 3 Tagen" bzw. nur das Label, wenn keine Frist gesetzt ist. */
+export function fristText(frist: string | null | undefined): string {
+  if (!frist) return fristLabel(frist ?? null);
+  return `${datumText(frist)} · ${fristLabel(frist)}`;
 }
