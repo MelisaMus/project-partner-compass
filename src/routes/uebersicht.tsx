@@ -18,13 +18,13 @@ import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projek
 export const Route = createFileRoute("/uebersicht")({
   head: () => ({
     meta: [
-      { title: "Übersicht aller Projekte – Partner Compass" },
+      { title: "Übersicht aller Projekte – Project Partner Compass" },
       {
         name: "description",
         content:
           "Alle Teilprojekte gruppiert nach Status, Partnerorganisation und Frist – als kompakte Liste ohne Board-Scrollen.",
       },
-      { property: "og:title", content: "Übersicht aller Projekte – Partner Compass" },
+      { property: "og:title", content: "Übersicht aller Projekte – Project Partner Compass" },
       {
         property: "og:description",
         content: "Gruppierte Liste aller Teilprojekte nach Status, Partner und Fristenlage.",
