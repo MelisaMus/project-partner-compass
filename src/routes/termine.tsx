@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays } from "lucide-react";
 import { useMemo } from "react";
 
+import { FristAlarmPanel } from "@/components/FristAlarmPanel";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { fristAmpel, fristLabel } from "@/lib/fristen";
