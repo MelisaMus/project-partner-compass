@@ -1,7 +1,7 @@
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,36 @@ const BEISPIELFRAGEN = [
 
 type Nachricht = { rolle: "frage" | "antwort"; text: string };
 
+const SPEICHER_SCHLUESSEL = "partner-compass-chat-verlauf";
+
 export function ChatPanel() {
   const frageStellen = useServerFn(boardFrage);
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
+  const [geladen, setGeladen] = useState(false);
+
+  // Gespräch bleibt beim Wechsel zwischen Board, Übersicht und Chat erhalten.
+  useEffect(() => {
+    try {
+      const roh = window.localStorage.getItem(SPEICHER_SCHLUESSEL);
+      if (roh) setVerlauf(JSON.parse(roh) as Nachricht[]);
+    } catch {
+      /* ignorieren */
+    }
+    setGeladen(true);
+  }, []);
+
+  useEffect(() => {
+    if (!geladen) return;
+    try {
+      window.localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(verlauf.slice(-40)));
+    } catch {
+      /* ignorieren */
+    }
+  }, [verlauf, geladen]);
+
+
+
 
   const mutation = useMutation({
     mutationFn: async (frage: string) =>
@@ -48,10 +74,21 @@ export function ChatPanel() {
       aria-label="Statusabfrage"
       className="rounded-xl border border-border bg-card p-5 shadow-card"
     >
-      <h2 className="flex items-center gap-2 text-lg font-semibold">
-        <Sparkles className="size-4 text-accent" aria-hidden />
-        Status abfragen
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="flex items-center gap-2 text-lg font-semibold">
+          <Sparkles className="size-4 text-accent" aria-hidden />
+          Status abfragen
+        </h2>
+        {verlauf.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => setVerlauf([])}
+            className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+          >
+            Gespräch zurücksetzen
+          </button>
+        ) : null}
+      </div>
       <p className="mt-1 text-sm text-muted-foreground">
         Fragen zum aktuellen Stand – beantwortet von einer KI auf Basis der Karten dieses Boards,
         Rückfragen im Gespräch möglich.
