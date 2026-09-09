@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExportRouteImport } from './routes/export'
 import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
@@ -23,6 +24,11 @@ import { Route as AuthenticatedUebersichtRouteImport } from './routes/_authentic
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExportRoute = ExportRouteImport.update({
@@ -78,6 +84,7 @@ const AuthenticatedUebersichtRoute = AuthenticatedUebersichtRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/uebersicht': typeof AuthenticatedUebersichtRoute
 }
 export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
@@ -103,6 +111,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/uebersicht'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_authenticated'
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
@@ -156,6 +168,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ExportRoute: typeof ExportRoute
   FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
@@ -169,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/export': {
@@ -267,6 +287,7 @@ const AuthenticatedRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ExportRoute: ExportRoute,
   FristenRoute: FristenRoute,
   PartnerRoute: PartnerRoute,
