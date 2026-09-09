@@ -10,6 +10,7 @@ import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
+import { meilensteineQueryOptions, naechsterOffenerMeilenstein } from "@/lib/meilensteine";
 import {
   STATUS_SPALTEN,
   projektAktualisieren,
