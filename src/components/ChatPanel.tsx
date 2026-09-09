@@ -30,7 +30,7 @@ type Nachricht = { rolle: "frage" | "antwort"; text: string };
 
 const SPEICHER_SCHLUESSEL = "partner-compass-chat-verlauf";
 
-export function ChatPanel({ startFrage }: { startFrage?: string } = {}) {
+export function ChatPanel({ startFrage }: { startFrage?: string | undefined } = {}) {
   const frageStellen = useServerFn(boardFrage);
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);

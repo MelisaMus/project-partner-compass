@@ -4,11 +4,11 @@ import { Compass } from "lucide-react";
 import { ChatPanel } from "@/components/ChatPanel";
 import { Reiter } from "@/components/Reiter";
 
-type ChatSuche = { frage?: string };
+type ChatSuche = { frage?: string | undefined };
 
 export const Route = createFileRoute("/chat")({
   validateSearch: (suche: Record<string, unknown>): ChatSuche => ({
-    frage: typeof suche.frage === "string" ? suche.frage.slice(0, 500) : undefined,
+    frage: typeof suche['frage'] === "string" ? (suche['frage'] as string).slice(0, 500) : undefined,
   }),
   head: () => ({
     meta: [
