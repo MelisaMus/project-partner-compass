@@ -22,13 +22,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Partner Compass – Board für Multi-Partner-Projekte" },
+      { title: "Project Partner Compass – Board für Multi-Partner-Projekte" },
       {
         name: "description",
         content:
-          "Kanban-Board mit Statusabfrage für Projekte mit mehreren externen Partnerorganisationen und parallelen Fristen.",
+          "Kanban-Board mit Statusabfrage für Projekte mit internen und externen Partnerorganisationen und parallelen Fristen.",
       },
-      { property: "og:title", content: "Partner Compass – Board für Multi-Partner-Projekte" },
+      { property: "og:title", content: "Project Partner Compass – Board für Multi-Partner-Projekte" },
       {
         property: "og:description",
         content:
@@ -130,9 +130,9 @@ function Board() {
               <Compass className="size-6" aria-hidden />
             </span>
             <div>
-              <h1 className="text-2xl font-semibold">Partner Compass</h1>
+              <h1 className="text-2xl font-semibold">Project Partner Compass</h1>
               <p className="text-sm text-muted-foreground">
-                Koordination von Teilprojekten mit externen Partnerorganisationen
+                Koordination von Teilprojekten mit internen und externen Partnerorganisationen
               </p>
             </div>
           </div>

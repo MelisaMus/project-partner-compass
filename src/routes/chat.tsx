@@ -7,13 +7,13 @@ import { Reiter } from "@/components/Reiter";
 export const Route = createFileRoute("/chat")({
   head: () => ({
     meta: [
-      { title: "Chat zum Projektstand – Partner Compass" },
+      { title: "Chat zum Projektstand – Project Partner Compass" },
       {
         name: "description",
         content:
           "Fragen zum aktuellen Stand der Teilprojekte, Fristen und Partnerorganisationen im Gespräch beantworten lassen.",
       },
-      { property: "og:title", content: "Chat zum Projektstand – Partner Compass" },
+      { property: "og:title", content: "Chat zum Projektstand – Project Partner Compass" },
       {
         property: "og:description",
         content: "Statusabfrage im Gespräch: Fristen, Partner und Berichtspflichten auf einen Blick.",
