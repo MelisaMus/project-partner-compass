@@ -7,6 +7,7 @@ import {
   LayoutGrid,
   LogOut,
   MessageSquare,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
