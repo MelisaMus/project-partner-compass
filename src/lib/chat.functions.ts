@@ -54,27 +54,13 @@ function kontextZeile(k: Karte, heute: Date): string {
 }
 
 export const boardFrage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => FrageSchema.parse(input))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) throw new Error("Die KI-Anbindung ist nicht konfiguriert.");
 
-    const supabaseKey = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-    const supabasePublic = createClient(process.env["SUPABASE_URL"]!, supabaseKey, {
-      auth: { persistSession: false },
-      global: {
-        fetch: (input, init) => {
-          const h = new Headers(init?.headers);
-          if (supabaseKey.startsWith("sb_") && h.get("Authorization") === `Bearer ${supabaseKey}`) {
-            h.delete("Authorization");
-          }
-          h.set("apikey", supabaseKey);
-          return fetch(input, { ...init, headers: h });
-        },
-      },
-    });
-
-    const { data: karten, error } = await supabasePublic
+    const { data: karten, error } = await context.supabase
       .from("projekte")
       .select(
         "titel, themenbereich, partnerorganisation, partner_typ, verantwortliche_person, status, naechste_frist, foerdermittelbezug, kurzbeschreibung",
