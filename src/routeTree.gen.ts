@@ -9,35 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as BerichteRouteImport } from './routes/berichte'
-import { Route as BoardsRouteImport } from './routes/boards'
-import { Route as ChatRouteImport } from './routes/chat'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExportRouteImport } from './routes/export'
 import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
-import { Route as TermineRouteImport } from './routes/termine'
-import { Route as UebersichtRouteImport } from './routes/uebersicht'
+import { Route as PasswortNeuRouteImport } from './routes/passwort-neu'
 import { Route as WochenberichtRouteImport } from './routes/wochenbericht'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedBerichteRouteImport } from './routes/_authenticated/berichte'
+import { Route as AuthenticatedBoardsRouteImport } from './routes/_authenticated/boards'
+import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
+import { Route as AuthenticatedTermineRouteImport } from './routes/_authenticated/termine'
+import { Route as AuthenticatedUebersichtRouteImport } from './routes/_authenticated/uebersicht'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BerichteRoute = BerichteRouteImport.update({
-  id: '/berichte',
-  path: '/berichte',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BoardsRoute = BoardsRouteImport.update({
-  id: '/boards',
-  path: '/boards',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExportRoute = ExportRouteImport.update({
@@ -55,14 +47,9 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TermineRoute = TermineRouteImport.update({
-  id: '/termine',
-  path: '/termine',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UebersichtRoute = UebersichtRouteImport.update({
-  id: '/uebersicht',
-  path: '/uebersicht',
+const PasswortNeuRoute = PasswortNeuRouteImport.update({
+  id: '/passwort-neu',
+  path: '/passwort-neu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WochenberichtRoute = WochenberichtRouteImport.update({
@@ -70,124 +57,151 @@ const WochenberichtRoute = WochenberichtRouteImport.update({
   path: '/wochenbericht',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBerichteRoute = AuthenticatedBerichteRouteImport.update({
+  id: '/berichte',
+  path: '/berichte',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBoardsRoute = AuthenticatedBoardsRouteImport.update({
+  id: '/boards',
+  path: '/boards',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTermineRoute = AuthenticatedTermineRouteImport.update({
+  id: '/termine',
+  path: '/termine',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUebersichtRoute = AuthenticatedUebersichtRouteImport.update({
+  id: '/uebersicht',
+  path: '/uebersicht',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/berichte': typeof BerichteRoute
-  '/boards': typeof BoardsRoute
-  '/chat': typeof ChatRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
-  '/termine': typeof TermineRoute
-  '/uebersicht': typeof UebersichtRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
+  '/berichte': typeof AuthenticatedBerichteRoute
+  '/boards': typeof AuthenticatedBoardsRoute
+  '/chat': typeof AuthenticatedChatRoute
+  '/termine': typeof AuthenticatedTermineRoute
+  '/uebersicht': typeof AuthenticatedUebersichtRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/berichte': typeof BerichteRoute
-  '/boards': typeof BoardsRoute
-  '/chat': typeof ChatRoute
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
-  '/termine': typeof TermineRoute
-  '/uebersicht': typeof UebersichtRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
+  '/berichte': typeof AuthenticatedBerichteRoute
+  '/boards': typeof AuthenticatedBoardsRoute
+  '/chat': typeof AuthenticatedChatRoute
+  '/termine': typeof AuthenticatedTermineRoute
+  '/uebersicht': typeof AuthenticatedUebersichtRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/berichte': typeof BerichteRoute
-  '/boards': typeof BoardsRoute
-  '/chat': typeof ChatRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
-  '/termine': typeof TermineRoute
-  '/uebersicht': typeof UebersichtRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
+  '/_authenticated/berichte': typeof AuthenticatedBerichteRoute
+  '/_authenticated/boards': typeof AuthenticatedBoardsRoute
+  '/_authenticated/chat': typeof AuthenticatedChatRoute
+  '/_authenticated/termine': typeof AuthenticatedTermineRoute
+  '/_authenticated/uebersicht': typeof AuthenticatedUebersichtRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/berichte'
-    | '/boards'
-    | '/chat'
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
+    | '/passwort-neu'
+    | '/wochenbericht'
+    | '/berichte'
+    | '/boards'
+    | '/chat'
     | '/termine'
     | '/uebersicht'
-    | '/wochenbericht'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/berichte'
-    | '/boards'
-    | '/chat'
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
+    | '/passwort-neu'
+    | '/wochenbericht'
+    | '/berichte'
+    | '/boards'
+    | '/chat'
     | '/termine'
     | '/uebersicht'
-    | '/wochenbericht'
+    | '/'
   id:
     | '__root__'
-    | '/'
-    | '/berichte'
-    | '/boards'
-    | '/chat'
+    | '/_authenticated'
+    | '/auth'
     | '/export'
     | '/fristen'
     | '/partner'
-    | '/termine'
-    | '/uebersicht'
+    | '/passwort-neu'
     | '/wochenbericht'
+    | '/_authenticated/berichte'
+    | '/_authenticated/boards'
+    | '/_authenticated/chat'
+    | '/_authenticated/termine'
+    | '/_authenticated/uebersicht'
+    | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  BerichteRoute: typeof BerichteRoute
-  BoardsRoute: typeof BoardsRoute
-  ChatRoute: typeof ChatRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ExportRoute: typeof ExportRoute
   FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
-  TermineRoute: typeof TermineRoute
-  UebersichtRoute: typeof UebersichtRoute
+  PasswortNeuRoute: typeof PasswortNeuRoute
   WochenberichtRoute: typeof WochenberichtRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/berichte': {
-      id: '/berichte'
-      path: '/berichte'
-      fullPath: '/berichte'
-      preLoaderRoute: typeof BerichteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/boards': {
-      id: '/boards'
-      path: '/boards'
-      fullPath: '/boards'
-      preLoaderRoute: typeof BoardsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/export': {
@@ -211,18 +225,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/termine': {
-      id: '/termine'
-      path: '/termine'
-      fullPath: '/termine'
-      preLoaderRoute: typeof TermineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/uebersicht': {
-      id: '/uebersicht'
-      path: '/uebersicht'
-      fullPath: '/uebersicht'
-      preLoaderRoute: typeof UebersichtRouteImport
+    '/passwort-neu': {
+      id: '/passwort-neu'
+      path: '/passwort-neu'
+      fullPath: '/passwort-neu'
+      preLoaderRoute: typeof PasswortNeuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wochenbericht': {
@@ -232,19 +239,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WochenberichtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/berichte': {
+      id: '/_authenticated/berichte'
+      path: '/berichte'
+      fullPath: '/berichte'
+      preLoaderRoute: typeof AuthenticatedBerichteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/boards': {
+      id: '/_authenticated/boards'
+      path: '/boards'
+      fullPath: '/boards'
+      preLoaderRoute: typeof AuthenticatedBoardsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/chat': {
+      id: '/_authenticated/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof AuthenticatedChatRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/termine': {
+      id: '/_authenticated/termine'
+      path: '/termine'
+      fullPath: '/termine'
+      preLoaderRoute: typeof AuthenticatedTermineRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/uebersicht': {
+      id: '/_authenticated/uebersicht'
+      path: '/uebersicht'
+      fullPath: '/uebersicht'
+      preLoaderRoute: typeof AuthenticatedUebersichtRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBerichteRoute: typeof AuthenticatedBerichteRoute
+  AuthenticatedBoardsRoute: typeof AuthenticatedBoardsRoute
+  AuthenticatedChatRoute: typeof AuthenticatedChatRoute
+  AuthenticatedTermineRoute: typeof AuthenticatedTermineRoute
+  AuthenticatedUebersichtRoute: typeof AuthenticatedUebersichtRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBerichteRoute: AuthenticatedBerichteRoute,
+  AuthenticatedBoardsRoute: AuthenticatedBoardsRoute,
+  AuthenticatedChatRoute: AuthenticatedChatRoute,
+  AuthenticatedTermineRoute: AuthenticatedTermineRoute,
+  AuthenticatedUebersichtRoute: AuthenticatedUebersichtRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  BerichteRoute: BerichteRoute,
-  BoardsRoute: BoardsRoute,
-  ChatRoute: ChatRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ExportRoute: ExportRoute,
   FristenRoute: FristenRoute,
   PartnerRoute: PartnerRoute,
-  TermineRoute: TermineRoute,
-  UebersichtRoute: UebersichtRoute,
+  PasswortNeuRoute: PasswortNeuRoute,
   WochenberichtRoute: WochenberichtRoute,
 }
 export const routeTree = rootRouteImport

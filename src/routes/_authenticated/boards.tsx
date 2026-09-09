@@ -19,7 +19,7 @@ import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { projektAktualisieren, projekteQueryOptions, type Projekt } from "@/lib/projekte";
 import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
-export const Route = createFileRoute("/boards")({
+export const Route = createFileRoute("/_authenticated/boards")({
   head: () => ({
     meta: [
       { title: "Boards & Projektkategorien – Project Partner Compass" },

@@ -18,7 +18,7 @@ import {
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
 import { AMPEL_KLASSEN, fristText } from "@/lib/darstellung";
 
-export const Route = createFileRoute("/uebersicht")({
+export const Route = createFileRoute("/_authenticated/uebersicht")({
   head: () => ({
     meta: [
       { title: "Übersicht aller Projekte – Project Partner Compass" },

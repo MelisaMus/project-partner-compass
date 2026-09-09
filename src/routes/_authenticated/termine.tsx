@@ -11,7 +11,7 @@ import { meilensteineQueryOptions, type Meilenstein } from "@/lib/meilensteine";
 import { projekteQueryOptions, type Projekt } from "@/lib/projekte";
 import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 
-export const Route = createFileRoute("/termine")({
+export const Route = createFileRoute("/_authenticated/termine")({
   head: () => ({
     meta: [
       { title: "Termine & Fristen – Project Partner Compass" },

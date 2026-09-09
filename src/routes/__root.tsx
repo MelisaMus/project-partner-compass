@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Toaster } from "@/components/ui/sonner";
 import { LiveSync } from "@/components/LiveSync";
+import { supabase } from "@/integrations/supabase/client";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -126,6 +127,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((ereignis) => {
+      if (ereignis !== "SIGNED_IN" && ereignis !== "SIGNED_OUT" && ereignis !== "USER_UPDATED")
+        return;
+      router.invalidate();
+      if (ereignis !== "SIGNED_OUT") queryClient.invalidateQueries();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

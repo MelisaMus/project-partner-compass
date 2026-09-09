@@ -1,13 +1,17 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   CalendarDays,
   Compass,
   FileText,
   LayoutGrid,
+  LogOut,
   MessageSquare,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
+
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Bereiche der App. Der erste Eintrag je Bereich ist die Startseite,
@@ -54,6 +58,20 @@ export function aktiverBereich(pfad: string): Bereich | undefined {
 export function AppShell({ children }: { children: ReactNode }) {
   const pfad = useRouterState({ select: (zustand) => zustand.location.pathname });
   const aktiv = aktiverBereich(pfad);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // Anmeldeseiten brauchen keinen Dashboard-Rahmen.
+  if (pfad === "/auth" || pfad === "/passwort-neu") {
+    return <>{children}</>;
+  }
+
+  async function abmelden() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -91,7 +109,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="p-5">
+        <div className="space-y-3 p-5">
+          <button
+            type="button"
+            onClick={() => void abmelden()}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-navy-muted transition-colors hover:bg-navy-hover/50 hover:text-navy-foreground"
+          >
+            <LogOut className="size-5 opacity-80" aria-hidden />
+            Abmelden
+          </button>
           <div className="rounded-2xl bg-navy-hover/60 p-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-teal">Hinweis</p>
             <p className="mt-2 text-sm leading-relaxed text-navy-foreground/80">
@@ -123,6 +149,13 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
+          <button
+            type="button"
+            onClick={() => void abmelden()}
+            className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm text-navy-muted transition-colors hover:text-navy-foreground"
+          >
+            Abmelden
+          </button>
         </nav>
         {children}
       </div>

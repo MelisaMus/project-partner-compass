@@ -95,10 +95,12 @@ gehört ausschließlich in die Serverumgebung und niemals ins Repository.
   erfunden; es sind keine echten Institutionen abgebildet.
 - Das Tool ist als **generisches Konzept für Multi-Partner-Projektkoordination**
   gedacht und nicht an eine bestimmte Institution gebunden.
-- Es gibt derzeit **keine Nutzerverwaltung/Anmeldung** (bewusst auf später
-  verschoben). Solange sie fehlt, sind Karten, Kontakte und Dokumente für alle
-  Besucher der veröffentlichten App lesbar und bearbeitbar – bitte keine
-  vertraulichen Daten eintragen.
+- **Zugriff nur mit Anmeldung:** Alle Inhalte liegen hinter `/auth`
+  (E-Mail und Passwort). Die Registrierung ist geschlossen – Zugänge werden im
+  Backend angelegt (Einladung). Angemeldete Personen arbeiten in einem
+  gemeinsamen Datenraum und sehen alle Projekte, Kontakte und Dokumente.
+  Projektdateien im Ablage-Bereich sind privat und nur für angemeldete Personen
+  über zeitlich begrenzte Links erreichbar.
 - Der automatische E-Mail-Versand des Wochenberichts ist vorbereitet, aber noch
   nicht aktiv – dafür wird eine eigene Absender-Domain benötigt.
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ProjektExport } from "@/components/ProjektExport";
 import { WochenberichtVorschau } from "@/components/WochenberichtVorschau";
 
-export const Route = createFileRoute("/berichte")({
+export const Route = createFileRoute("/_authenticated/berichte")({
   head: () => ({
     meta: [
       { title: "Berichte und Export – Project Partner Compass" },

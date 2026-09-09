@@ -25,7 +25,7 @@ import {
   type ProjektEingabe,
 } from "@/lib/projekte";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Project Partner Compass – Board für Multi-Partner-Projekte" },
