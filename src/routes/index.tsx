@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { ChatPanel } from "@/components/ChatPanel";
+import { FristAlarm } from "@/components/FristAlarm";
 import { KartenDialog } from "@/components/KartenDialog";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
@@ -165,6 +166,14 @@ function Board() {
             label="Berichtspflicht fällig"
           />
         </div>
+
+        <FristAlarm
+          projekte={projekte}
+          onKarteOeffnen={(karte) => {
+            setAktuelleKarte(karte);
+            setDialogOffen(true);
+          }}
+        />
 
         <ChatPanel />
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { fristAmpel, fristLabel, hatFristInnerhalb, tageBisFrist } from "./fristen";
+import { dringendeFristen, fristAmpel, fristLabel, hatFristInnerhalb, tageBisFrist } from "./fristen";
 
 const heute = new Date("2027-03-01T09:30:00Z");
 
@@ -56,5 +56,29 @@ describe("hatFristInnerhalb", () => {
     expect(hatFristInnerhalb("2027-02-01", 14, heute)).toBe(true);
     expect(hatFristInnerhalb("2027-04-10", 14, heute)).toBe(false);
     expect(hatFristInnerhalb(null, 14, heute)).toBe(false);
+  });
+});
+
+describe("dringendeFristen", () => {
+  const karten = [
+    { id: "a", naechste_frist: "2027-03-05", status: "Laufend" },
+    { id: "b", naechste_frist: "2027-02-26", status: "Laufend" },
+    { id: "c", naechste_frist: "2027-04-01", status: "Laufend" },
+    { id: "d", naechste_frist: null, status: "Laufend" },
+    { id: "e", naechste_frist: "2027-03-02", status: "Abgeschlossen" },
+  ];
+
+  it("liefert überfällige und in unter 7 Tagen fällige Karten, sortiert", () => {
+    expect(dringendeFristen(karten, heute).map((k) => k.id)).toEqual(["b", "a"]);
+  });
+
+  it("ignoriert abgeschlossene Karten und Karten ohne Frist", () => {
+    const ids = dringendeFristen(karten, heute).map((k) => k.id);
+    expect(ids).not.toContain("e");
+    expect(ids).not.toContain("d");
+  });
+
+  it("respektiert ein eigenes Fenster", () => {
+    expect(dringendeFristen(karten, heute, 40).map((k) => k.id)).toEqual(["b", "a", "c"]);
   });
 });
