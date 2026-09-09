@@ -47,3 +47,23 @@ export function hatFristInnerhalb(
   const tage = tageBisFrist(frist, heute);
   return tage !== null && tage <= tageFenster;
 }
+
+/** Abgeschlossene Projekte lösen keinen Alarm aus. */
+export const ALARM_TAGE_FENSTER = 7;
+
+/**
+ * Projekte mit dringender Frist: überfällig oder in weniger als `tageFenster` Tagen fällig.
+ * Sortiert nach Dringlichkeit (überfällig zuerst). Status "Abgeschlossen" wird ignoriert.
+ */
+export function dringendeFristen<T extends { naechste_frist: string | null; status?: string }>(
+  projekte: readonly T[],
+  heute: Date = new Date(),
+  tageFenster: number = ALARM_TAGE_FENSTER,
+): T[] {
+  return projekte
+    .filter((p) => p.status !== "Abgeschlossen")
+    .map((p) => ({ p, tage: tageBisFrist(p.naechste_frist, heute) }))
+    .filter((e): e is { p: T; tage: number } => e.tage !== null && e.tage < tageFenster)
+    .sort((a, b) => a.tage - b.tage)
+    .map((e) => e.p);
+}

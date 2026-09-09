@@ -57,6 +57,9 @@ export const projekteQueryOptions = {
     if (error) throw new Error(error.message);
     return (data ?? []) as Projekt[];
   },
+  // Fristen-Alarm hält sich ohne Neuladen aktuell
+  refetchInterval: 60_000,
+  refetchOnWindowFocus: true,
 };
 
 export async function projektAnlegen(eingabe: ProjektEingabe): Promise<void> {
