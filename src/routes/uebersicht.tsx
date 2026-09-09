@@ -178,6 +178,7 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
             </dd>
           </div>
           <MeilensteinPlaner projektId={projekt.id} meilensteine={meilensteine} />
+          <DokumentListe projektId={projekt.id} />
         </div>
       ) : null}
     </li>
