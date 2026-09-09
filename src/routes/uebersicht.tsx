@@ -123,6 +123,10 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
                 projekt.themenbereich || null,
                 projekt.verantwortliche_person || null,
                 projekt.foerdermittelbezug || null,
+                offeneAnzahl > 0
+                  ? `${offeneAnzahl} offene${offeneAnzahl === 1 ? "r" : ""} Milestone${offeneAnzahl === 1 ? "" : "s"}`
+                  : null,
+                naechster ? `nächster: ${naechster.titel} (${fristLabel(naechster.frist)})` : null,
               ]
                 .filter(Boolean)
                 .join(" · ")}
