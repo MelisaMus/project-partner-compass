@@ -16,7 +16,14 @@ describe("projektsituation", () => {
       ],
       heute,
     );
-    expect(situation).toEqual({ gesamt: 5, laufend: 2, abgeschlossen: 1, ueberfaellig: 2 });
+    expect(situation).toEqual({
+      gesamt: 5,
+      laufend: 2,
+      abgeschlossen: 1,
+      ueberfaellig: 2,
+      fristZweiWochen: 3,
+      berichtspflicht: 1,
+    });
   });
 
   it("zählt die heutige Frist nicht als überfällig", () => {
@@ -25,6 +32,13 @@ describe("projektsituation", () => {
   });
 
   it("liefert Nullen für eine leere Liste", () => {
-    expect(projektsituation([], heute)).toEqual({ gesamt: 0, laufend: 0, abgeschlossen: 0, ueberfaellig: 0 });
+    expect(projektsituation([], heute)).toEqual({
+      gesamt: 0,
+      laufend: 0,
+      abgeschlossen: 0,
+      ueberfaellig: 0,
+      fristZweiWochen: 0,
+      berichtspflicht: 0,
+    });
   });
 });

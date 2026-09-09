@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { CalendarClock, Compass, FileWarning, LayoutGrid, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { FristAlarm } from "@/components/FristAlarm";
@@ -12,7 +12,7 @@ import { Projektsituation } from "@/components/Projektsituation";
 
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { fristAmpel, fristLabel, hatFristInnerhalb } from "@/lib/fristen";
+import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { meilensteineQueryOptions, naechsterOffenerMeilenstein } from "@/lib/meilensteine";
 import { AMPEL_KLASSEN } from "@/lib/darstellung";
 import {
@@ -48,27 +48,6 @@ export const Route = createFileRoute("/")({
 });
 
 
-function Kachel({
-  icon,
-  wert,
-  label,
-}: {
-  icon: React.ReactNode;
-  wert: number;
-  label: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-card">
-      <span className="grid size-10 place-items-center rounded-lg bg-secondary text-secondary-foreground">
-        {icon}
-      </span>
-      <span>
-        <span className="block text-2xl font-semibold leading-none">{wert}</span>
-        <span className="text-xs text-muted-foreground">{label}</span>
-      </span>
-    </div>
-  );
-}
 
 function Board() {
   const queryClient = useQueryClient();
@@ -114,29 +93,18 @@ function Board() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const kennzahlen = useMemo(
-    () => ({
-      gesamt: projekte.length,
-      fristZweiWochen: projekte.filter((p) => hatFristInnerhalb(p.naechste_frist, 14)).length,
-      berichtspflicht: projekte.filter((p) => p.status === "Berichtspflicht fällig").length,
-    }),
-    [projekte],
-  );
 
   return (
     <main className="min-h-screen">
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6">
-          <div className="flex items-center gap-3">
-            <span className="grid size-11 place-items-center rounded-xl bg-primary text-primary-foreground">
-              <Compass className="size-6" aria-hidden />
-            </span>
-            <div>
-              <h1 className="text-2xl font-semibold">Project Partner Compass</h1>
-              <p className="text-sm text-muted-foreground">
-                Koordination von Teilprojekten mit internen und externen Partnerorganisationen
-              </p>
-            </div>
+      <header className="border-b border-border bg-card px-6 py-8 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-3xl font-extrabold text-foreground">
+              Projekt-Koordination
+            </h1>
+            <p className="mt-1 text-muted-foreground">
+              Koordination von Teilprojekten mit internen und externen Partnerorganisationen
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Reiter />
@@ -151,26 +119,11 @@ function Board() {
             </Button>
           </div>
         </div>
+
+        <Projektsituation projekte={projekte} />
       </header>
 
-      <div className="mx-auto max-w-7xl space-y-6 px-6 py-6">
-        <Projektsituation projekte={projekte} />
-
-        <div className="grid gap-4 sm:grid-cols-3">
-
-          <Kachel icon={<LayoutGrid className="size-5" aria-hidden />} wert={kennzahlen.gesamt} label="Projekte gesamt" />
-          <Kachel
-            icon={<CalendarClock className="size-5" aria-hidden />}
-            wert={kennzahlen.fristZweiWochen}
-            label="Frist in den nächsten 2 Wochen"
-          />
-          <Kachel
-            icon={<FileWarning className="size-5" aria-hidden />}
-            wert={kennzahlen.berichtspflicht}
-            label="Berichtspflicht fällig"
-          />
-        </div>
-
+      <div className="space-y-6 px-6 py-6 lg:px-8">
         <FristAlarm
           projekte={projekte}
           onKarteOeffnen={(karte) => {
@@ -178,6 +131,8 @@ function Board() {
             setDialogOffen(true);
           }}
         />
+
+
 
 
         {error ? (
@@ -206,13 +161,17 @@ function Board() {
                       statusVerschieben.mutate({ id: karte.id, status: spalte });
                     }
                   }}
-                  className={`w-72 shrink-0 rounded-xl border p-3 transition-colors ${
-                    zielSpalte === spalte ? "border-primary bg-secondary" : "border-border bg-surface"
+                  className={`w-80 shrink-0 rounded-2xl border p-4 transition-colors ${
+                    zielSpalte === spalte
+                      ? "border-primary bg-accent/10"
+                      : "border-border bg-surface"
                   }`}
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <h2 className="text-sm font-semibold">{spalte}</h2>
-                    <span className="rounded-full bg-card px-2 py-0.5 text-xs text-muted-foreground">
+                  <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
+                    <h2 className="font-display text-sm font-bold uppercase tracking-wider text-secondary-foreground">
+                      {spalte}
+                    </h2>
+                    <span className="rounded-full bg-navy px-2.5 py-0.5 text-xs font-semibold text-navy-foreground">
                       {karten.length}
                     </span>
                   </div>
@@ -238,13 +197,15 @@ function Board() {
                             setAktuelleKarte(karte);
                             setDialogOffen(true);
                           }}
-                          className="cursor-pointer rounded-lg border border-border bg-card p-3 shadow-card transition-shadow hover:shadow-md"
+                          className="cursor-pointer rounded-2xl border border-border bg-card p-4 shadow-card transition-shadow hover:shadow-md"
                         >
-                          <h3 className="text-sm font-semibold leading-snug">{karte.titel}</h3>
-                          <p className="mt-1 text-xs text-muted-foreground">
+                          <h3 className="font-display text-[15px] font-bold leading-snug text-foreground">
+                            {karte.titel}
+                          </h3>
+                          <p className="mt-1.5 text-xs font-medium text-muted-foreground">
                             {karte.partnerorganisation || "Partner offen"}
                           </p>
-                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                          <div className="mt-3 flex flex-wrap items-center gap-1.5">
                             <span
                               className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}
                             >
