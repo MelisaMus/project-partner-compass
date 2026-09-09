@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      meilensteine: {
+        Row: {
+          created_at: string
+          erledigt: boolean
+          frist: string | null
+          id: string
+          letzte_aktualisierung: string
+          notiz: string | null
+          projekt_id: string
+          sortierung: number
+          titel: string
+        }
+        Insert: {
+          created_at?: string
+          erledigt?: boolean
+          frist?: string | null
+          id?: string
+          letzte_aktualisierung?: string
+          notiz?: string | null
+          projekt_id: string
+          sortierung?: number
+          titel: string
+        }
+        Update: {
+          created_at?: string
+          erledigt?: boolean
+          frist?: string | null
+          id?: string
+          letzte_aktualisierung?: string
+          notiz?: string | null
+          projekt_id?: string
+          sortierung?: number
+          titel?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meilensteine_projekt_id_fkey"
+            columns: ["projekt_id"]
+            isOneToOne: false
+            referencedRelation: "projekte"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projekte: {
         Row: {
           created_at: string

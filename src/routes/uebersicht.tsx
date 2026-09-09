@@ -3,9 +3,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, tageBisFrist, type FristAmpel } from "@/lib/fristen";
+import {
+  meilensteineQueryOptions,
+  naechsterOffenerMeilenstein,
+  type Meilenstein,
+} from "@/lib/meilensteine";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
 
 export const Route = createFileRoute("/uebersicht")({
@@ -92,10 +98,13 @@ function DetailFeld({ label, wert }: { label: string; wert: string | null }) {
   );
 }
 
-function Zeile({ projekt }: { projekt: Projekt }) {
+function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meilenstein[] }) {
   const ampel = fristAmpel(projekt.naechste_frist);
   const [offen, setOffen] = useState(false);
   const detailId = `details-${projekt.id}`;
+  const naechster = naechsterOffenerMeilenstein(meilensteine);
+  const offeneAnzahl = meilensteine.filter((m) => !m.erledigt).length;
+
 
   return (
     <li className="rounded-lg border border-border bg-card">
@@ -120,6 +129,10 @@ function Zeile({ projekt }: { projekt: Projekt }) {
                 projekt.themenbereich || null,
                 projekt.verantwortliche_person || null,
                 projekt.foerdermittelbezug || null,
+                offeneAnzahl > 0
+                  ? `${offeneAnzahl} offene${offeneAnzahl === 1 ? "r" : ""} Milestone${offeneAnzahl === 1 ? "" : "s"}`
+                  : null,
+                naechster ? `nächster: ${naechster.titel} (${fristLabel(naechster.frist)})` : null,
               ]
                 .filter(Boolean)
                 .join(" · ")}
@@ -151,6 +164,7 @@ function Zeile({ projekt }: { projekt: Projekt }) {
               {projekt.kurzbeschreibung?.trim() || "Keine Beschreibung hinterlegt."}
             </dd>
           </div>
+          <MeilensteinPlaner projektId={projekt.id} meilensteine={meilensteine} />
         </div>
       ) : null}
     </li>
@@ -159,9 +173,20 @@ function Zeile({ projekt }: { projekt: Projekt }) {
 
 function Uebersicht() {
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
+  const { data: meilensteine = [] } = useQuery(meilensteineQueryOptions);
   const [modus, setModus] = useState<Gruppierung>("status");
 
   const abschnitte = useMemo(() => gruppen(projekte, modus), [projekte, modus]);
+
+  const meilensteineJeProjekt = useMemo(() => {
+    const map = new Map<string, Meilenstein[]>();
+    for (const m of meilensteine) {
+      const liste = map.get(m.projekt_id) ?? [];
+      liste.push(m);
+      map.set(m.projekt_id, liste);
+    }
+    return map;
+  }, [meilensteine]);
 
   const knoepfe: { wert: Gruppierung; label: string; icon: React.ReactNode }[] = [
     { wert: "status", label: "Status", icon: <ListTree className="size-4" aria-hidden /> },
@@ -224,7 +249,11 @@ function Uebersicht() {
             ) : (
               <ul className="space-y-2">
                 {abschnitt.karten.map((p) => (
-                  <Zeile key={p.id} projekt={p} />
+                  <Zeile
+                    key={p.id}
+                    projekt={p}
+                    meilensteine={meilensteineJeProjekt.get(p.id) ?? []}
+                  />
                 ))}
               </ul>
             )}
