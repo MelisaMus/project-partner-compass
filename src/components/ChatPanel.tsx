@@ -1,7 +1,7 @@
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,31 @@ const BEISPIELFRAGEN = [
 
 type Nachricht = { rolle: "frage" | "antwort"; text: string };
 
+const SPEICHER_SCHLUESSEL = "partner-compass-chat-verlauf";
+
 export function ChatPanel() {
   const frageStellen = useServerFn(boardFrage);
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
+
+  // Gespräch bleibt beim Wechsel zwischen Board, Übersicht und Chat erhalten.
+  useEffect(() => {
+    try {
+      const roh = window.localStorage.getItem(SPEICHER_SCHLUESSEL);
+      if (roh) setVerlauf(JSON.parse(roh) as Nachricht[]);
+    } catch {
+      /* ignorieren */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(verlauf.slice(-40)));
+    } catch {
+      /* ignorieren */
+    }
+  }, [verlauf]);
+
 
   const mutation = useMutation({
     mutationFn: async (frage: string) =>
