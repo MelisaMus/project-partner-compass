@@ -13,20 +13,22 @@ import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 export const Route = createFileRoute("/termine")({
   head: () => ({
     meta: [
-      { title: "Terminplaner – Project Partner Compass" },
+      { title: "Termine & Fristen – Project Partner Compass" },
       {
         name: "description",
         content:
-          "Eigene Termine je Projekt planen – Kick-off, Berichtsfristen und Abstimmungen, chronologisch gelistet.",
+          "Termine je Projekt planen und alle überfälligen oder bald fälligen Fristen im Blick behalten.",
       },
-      { property: "og:title", content: "Terminplaner – Project Partner Compass" },
+      { property: "og:title", content: "Termine & Fristen – Project Partner Compass" },
       {
         property: "og:description",
-        content: "Alle Projekttermine an einem Ort: anlegen, abhaken und chronologisch verfolgen.",
+        content:
+          "Kick-off, Berichtsfristen und Frist-Alarm für alle Teilprojekte auf einer Seite.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "/termine" }],
   }),
   component: TerminePlanerSeite,
 });
