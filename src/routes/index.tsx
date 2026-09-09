@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { CalendarClock, Compass, FileWarning, LayoutGrid, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { FristAlarm } from "@/components/FristAlarm";
 import { KartenDialog } from "@/components/KartenDialog";
+import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
@@ -81,6 +82,7 @@ function Board() {
   const [aktuelleKarte, setAktuelleKarte] = useState<Projekt | null>(null);
   const [ziehtId, setZiehtId] = useState<string | null>(null);
   const [zielSpalte, setZielSpalte] = useState<string | null>(null);
+  const [planerOffen, setPlanerOffen] = useState<Set<string>>(new Set());
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: projekteQueryOptions.queryKey });
 
