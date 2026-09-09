@@ -27,3 +27,23 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## Partner Compass
+
+Kanban-Board mit Chat-Abfrage zur Koordination von Teilprojekten mit mehreren
+externen Partnerorganisationen und parallelen Fristen.
+
+- Board-Spalten: Anbahnung, In Abstimmung, Laufend, Berichtspflicht fällig, Abgeschlossen
+- Fristen-Ampel: grün > 4 Wochen, gelb 1–4 Wochen, rot < 1 Woche (auch überfällig)
+- Statusabfrage: Die Frage wird gemeinsam mit allen aktuellen Kartendaten als
+  strukturierter Kontext an ein Sprachmodell geschickt (keine Vektorsuche).
+- Tests der Fristen-Logik: `bun run test` (Vitest, `src/lib/fristen.test.ts`)
+
+### Hinweise
+
+- **Alle Beispieldaten sind fiktiv.** Die Beispielkarten und Partnernamen sind frei
+  erfunden; es sind keine echten Institutionen abgebildet.
+- Das Tool ist als **generisches Konzept für Multi-Partner-Projektkoordination**
+  gedacht und nicht an eine bestimmte Institution gebunden.
+- In diesem ersten Schritt gibt es noch keine Nutzerverwaltung/Anmeldung; die
+  Karten sind daher für alle Besucher lesbar und bearbeitbar.
