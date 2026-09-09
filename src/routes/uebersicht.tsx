@@ -3,9 +3,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, tageBisFrist, type FristAmpel } from "@/lib/fristen";
+import {
+  meilensteineQueryOptions,
+  naechsterOffenerMeilenstein,
+  type Meilenstein,
+} from "@/lib/meilensteine";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
 
 export const Route = createFileRoute("/uebersicht")({
