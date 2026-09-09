@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { ChatPanel } from "@/components/ChatPanel";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
@@ -214,6 +215,8 @@ function Uebersicht() {
       </header>
 
       <div className="mx-auto max-w-5xl space-y-6 px-6 py-6">
+        <ChatPanel />
+
         <div className="flex flex-wrap gap-2" role="group" aria-label="Gruppierung wählen">
           {knoepfe.map((k) => (
             <Button
