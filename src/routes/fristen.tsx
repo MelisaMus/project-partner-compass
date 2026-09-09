@@ -80,6 +80,8 @@ function FristenSeite() {
       <div className="mx-auto max-w-4xl space-y-4 px-6 py-6">
         {isLoading ? <p className="text-sm text-muted-foreground">Lädt…</p> : null}
 
+        <AlarmEinstellungen />
+
         <FristAlarm projekte={projekte} />
 
         <section className="rounded-xl border border-border bg-card p-4">
