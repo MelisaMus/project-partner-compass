@@ -137,9 +137,7 @@ function Board() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button asChild variant="outline">
-              <Link to="/uebersicht">Übersicht</Link>
-            </Button>
+            <Reiter />
             <Button
               onClick={() => {
                 setAktuelleKarte(null);
