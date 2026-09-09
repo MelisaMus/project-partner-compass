@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Compass } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
