@@ -4,17 +4,12 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import type { Projekt } from "@/lib/projekte";
+import { datumText } from "@/lib/darstellung";
 
 type Props = {
   projekte: Projekt[];
 };
 
-function datum(wert: string | null | undefined): string {
-  if (!wert) return "–";
-  const d = new Date(wert);
-  if (Number.isNaN(d.getTime())) return "–";
-  return d.toLocaleDateString("de-DE");
-}
 
 function kuerzen(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
@@ -87,8 +82,8 @@ export function PdfExportButton({ projekte }: Props) {
           projekt.titel,
           projekt.partnerorganisation || "–",
           projekt.status,
-          datum(projekt.naechste_frist),
-          datum(projekt.letzte_aktualisierung),
+          datumText(projekt.naechste_frist),
+          datumText(projekt.letzte_aktualisierung),
         ];
         werte.forEach((wert, index) => {
           const spalte = spalten[index]!;

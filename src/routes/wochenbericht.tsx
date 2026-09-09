@@ -9,7 +9,7 @@ import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import { projekteQueryOptions } from "@/lib/projekte";
 import { wochenberichtErstellen, type BerichtGruppe } from "@/lib/wochenbericht";
-import { AMPEL_KLASSEN } from "@/lib/darstellung";
+import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/wochenbericht")({
   head: () => ({
@@ -42,15 +42,6 @@ const GRUPPIERUNGEN = [
 
 type Gruppierung = (typeof GRUPPIERUNGEN)[number]["schluessel"];
 
-function datumText(wert: string | null): string {
-  if (!wert) return "–";
-  return new Date(`${wert.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}
 
 function WochenberichtSeite() {
   const [gruppierung, setGruppierung] = useState<Gruppierung>("status");

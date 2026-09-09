@@ -8,7 +8,7 @@ import { Reiter } from "@/components/Reiter";
 import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
 import { meilensteineQueryOptions, type Meilenstein } from "@/lib/meilensteine";
 import { projekteQueryOptions, type Projekt } from "@/lib/projekte";
-import { AMPEL_KLASSEN } from "@/lib/darstellung";
+import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/termine")({
   head: () => ({
@@ -32,10 +32,6 @@ export const Route = createFileRoute("/termine")({
 });
 
 
-function datumText(frist: string | null): string {
-  if (!frist) return "ohne Datum";
-  return new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
-}
 
 function TerminePlanerSeite() {
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
@@ -114,7 +110,7 @@ function TerminePlanerSeite() {
                     </span>
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{datumText(termin.frist)}</span>
+                    <span className="text-xs text-muted-foreground">{datumText(termin.frist, "ohne Datum")}</span>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${AMPEL_KLASSEN[fristAmpel(termin.frist)]}`}
                     >

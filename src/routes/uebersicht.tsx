@@ -16,7 +16,7 @@ import {
   type Meilenstein,
 } from "@/lib/meilensteine";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
-import { AMPEL_KLASSEN } from "@/lib/darstellung";
+import { AMPEL_KLASSEN, fristText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/uebersicht")({
   head: () => ({
@@ -81,11 +81,6 @@ function gruppen(projekte: Projekt[], modus: Gruppierung): { titel: string; kart
   }));
 }
 
-function fristText(frist: string | null): string {
-  if (!frist) return fristLabel(frist);
-  const datum = new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
-  return `${datum} · ${fristLabel(frist)}`;
-}
 
 function DetailFeld({ label, wert }: { label: string; wert: string | null }) {
   return (

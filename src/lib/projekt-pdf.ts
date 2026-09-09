@@ -1,3 +1,4 @@
+import { datumText } from "@/lib/darstellung";
 import type { Dokument } from "@/lib/dokumente";
 import type { Kontakt } from "@/lib/kontakte";
 import type { Meilenstein } from "@/lib/meilensteine";
@@ -10,11 +11,6 @@ export type BerichtDaten = {
   kontakte: Kontakt[];
 };
 
-export function datumText(wert: string | null | undefined): string {
-  if (!wert) return "–";
-  const d = new Date(wert);
-  return Number.isNaN(d.getTime()) ? "–" : d.toLocaleDateString("de-DE");
-}
 
 /** Dateiname für den Partnerbericht, z. B. "partnerbericht-transferwerkstatt-2026-09-09.pdf". */
 export function berichtDateiname(titel: string, heute: Date = new Date()): string {
@@ -125,3 +121,5 @@ export async function projektBerichtExportieren(daten: BerichtDaten): Promise<st
   doc.save(dateiname);
   return dateiname;
 }
+
+export { datumText };
