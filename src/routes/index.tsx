@@ -130,9 +130,9 @@ function Board() {
               <Compass className="size-6" aria-hidden />
             </span>
             <div>
-              <h1 className="text-2xl font-semibold">Partner Compass</h1>
+              <h1 className="text-2xl font-semibold">Project Partner Compass</h1>
               <p className="text-sm text-muted-foreground">
-                Koordination von Teilprojekten mit externen Partnerorganisationen
+                Koordination von Teilprojekten mit internen und externen Partnerorganisationen
               </p>
             </div>
           </div>
