@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { CalendarClock, Compass, FileWarning, LayoutGrid, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { ChatPanel } from "@/components/ChatPanel";
 import { FristAlarm } from "@/components/FristAlarm";
 import { KartenDialog } from "@/components/KartenDialog";
+import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
 import {
