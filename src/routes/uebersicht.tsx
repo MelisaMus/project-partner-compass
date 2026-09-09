@@ -167,9 +167,20 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
 
 function Uebersicht() {
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
+  const { data: meilensteine = [] } = useQuery(meilensteineQueryOptions);
   const [modus, setModus] = useState<Gruppierung>("status");
 
   const abschnitte = useMemo(() => gruppen(projekte, modus), [projekte, modus]);
+
+  const meilensteineJeProjekt = useMemo(() => {
+    const map = new Map<string, Meilenstein[]>();
+    for (const m of meilensteine) {
+      const liste = map.get(m.projekt_id) ?? [];
+      liste.push(m);
+      map.set(m.projekt_id, liste);
+    }
+    return map;
+  }, [meilensteine]);
 
   const knoepfe: { wert: Gruppierung; label: string; icon: React.ReactNode }[] = [
     { wert: "status", label: "Status", icon: <ListTree className="size-4" aria-hidden /> },
