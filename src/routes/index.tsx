@@ -157,7 +157,10 @@ function Board() {
       </header>
 
       <div className="mx-auto max-w-7xl space-y-6 px-6 py-6">
+        <Projektsituation projekte={projekte} />
+
         <div className="grid gap-4 sm:grid-cols-3">
+
           <Kachel icon={<LayoutGrid className="size-5" aria-hidden />} wert={kennzahlen.gesamt} label="Projekte gesamt" />
           <Kachel
             icon={<CalendarClock className="size-5" aria-hidden />}
