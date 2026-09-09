@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
+import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import {
   PARTNER_TYPEN,
   STATUS_SPALTEN,
@@ -47,6 +49,8 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
   const [werte, setWerte] = useState<ProjektEingabe>(() => zuEingabe(projekt));
   const [speichert, setSpeichert] = useState(false);
   const { data: boards } = useQuery(boardsQueryOptions);
+  const { data: alleMeilensteine } = useQuery(meilensteineQueryOptions);
+  const meilensteine = (alleMeilensteine ?? []).filter((m) => m.projekt_id === projekt?.id);
 
   useEffect(() => {
     if (offen) setWerte(zuEingabe(projekt));
@@ -196,6 +200,16 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
             />
           </div>
         </div>
+
+        {projekt ? (
+          <div className="rounded-lg border border-border bg-surface px-3 py-2">
+            <MeilensteinPlaner projektId={projekt.id} meilensteine={meilensteine} />
+          </div>
+        ) : (
+          <p className="rounded-lg border border-dashed border-border px-3 py-3 text-xs text-muted-foreground">
+            Meilensteine können angelegt werden, sobald die Karte gespeichert ist.
+          </p>
+        )}
 
         <DialogFooter className="gap-2 sm:justify-between">
           <div>

@@ -219,6 +219,11 @@ function Board() {
                     ) : null}
                     {karten.map((karte) => {
                       const ampel = fristAmpel(karte.naechste_frist);
+                      const karteMeilensteine = (alleMeilensteine ?? []).filter(
+                        (m) => m.projekt_id === karte.id,
+                      );
+                      const offeneMeilensteine = karteMeilensteine.filter((m) => !m.erledigt);
+                      const naechsterMeilenstein = naechsterOffenerMeilenstein(karteMeilensteine);
                       return (
                         <article
                           key={karte.id}
@@ -246,7 +251,18 @@ function Board() {
                                 {karte.themenbereich}
                               </span>
                             ) : null}
+                            {karteMeilensteine.length > 0 ? (
+                              <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-secondary-foreground">
+                                {offeneMeilensteine.length}/{karteMeilensteine.length} Meilensteine
+                              </span>
+                            ) : null}
                           </div>
+                          {naechsterMeilenstein ? (
+                            <p className="mt-2 text-[11px] text-muted-foreground">
+                              Nächster Meilenstein: {naechsterMeilenstein.titel} (
+                              {fristLabel(naechsterMeilenstein.frist)})
+                            </p>
+                          ) : null}
                         </article>
                       );
                     })}
