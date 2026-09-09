@@ -41,6 +41,47 @@ export type Database = {
         }
         Relationships: []
       }
+      dokumente: {
+        Row: {
+          created_at: string
+          dateiname: string
+          dateityp: string | null
+          groesse: number | null
+          id: string
+          letzte_aktualisierung: string
+          pfad: string
+          projekt_id: string
+        }
+        Insert: {
+          created_at?: string
+          dateiname: string
+          dateityp?: string | null
+          groesse?: number | null
+          id?: string
+          letzte_aktualisierung?: string
+          pfad: string
+          projekt_id: string
+        }
+        Update: {
+          created_at?: string
+          dateiname?: string
+          dateityp?: string | null
+          groesse?: number | null
+          id?: string
+          letzte_aktualisierung?: string
+          pfad?: string
+          projekt_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dokumente_projekt_id_fkey"
+            columns: ["projekt_id"]
+            isOneToOne: false
+            referencedRelation: "projekte"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       meilensteine: {
         Row: {
           created_at: string

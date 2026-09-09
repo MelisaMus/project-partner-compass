@@ -4,6 +4,7 @@ import { Building2, CalendarClock, ChevronRight, Compass, ListTree, MessageCircl
 import { useMemo, useState } from "react";
 
 import { ChatPanel } from "@/components/ChatPanel";
+import { DokumentListe } from "@/components/DokumentListe";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
@@ -178,6 +179,7 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
             </dd>
           </div>
           <MeilensteinPlaner projektId={projekt.id} meilensteine={meilensteine} />
+          <DokumentListe projektId={projekt.id} />
         </div>
       ) : null}
     </li>
