@@ -38,11 +38,15 @@ export function MeilensteinPlaner({
   const [frist, setFrist] = useState("");
 
   const neuLaden = () => queryClient.invalidateQueries({ queryKey: ["meilensteine"] });
+  const cacheAktualisieren = (aktualisieren: (alt: Meilenstein[]) => Meilenstein[]) => {
+    queryClient.setQueryData<Meilenstein[]>(["meilensteine"], (alt = []) => aktualisieren(alt));
+  };
 
   const anlegen = useMutation({
     mutationFn: () =>
       meilensteinAnlegen({ projekt_id: projektId, titel: titel.trim(), frist: frist || null }),
-    onSuccess: async () => {
+    onSuccess: async (neu) => {
+      cacheAktualisieren((alt) => [...alt, neu]);
       setTitel("");
       setFrist("");
       await neuLaden();
@@ -53,13 +57,19 @@ export function MeilensteinPlaner({
 
   const umschalten = useMutation({
     mutationFn: (m: Meilenstein) => meilensteinAktualisieren(m.id, { erledigt: !m.erledigt }),
-    onSuccess: neuLaden,
+    onSuccess: async (aktualisiert) => {
+      cacheAktualisieren((alt) => alt.map((m) => (m.id === aktualisiert.id ? aktualisiert : m)));
+      await neuLaden();
+    },
     onError: (e: Error) => toast.error(`Änderung fehlgeschlagen: ${e.message}`),
   });
 
   const loeschen = useMutation({
     mutationFn: (id: string) => meilensteinLoeschen(id),
-    onSuccess: neuLaden,
+    onSuccess: async (geloeschteId) => {
+      cacheAktualisieren((alt) => alt.filter((m) => m.id !== geloeschteId));
+      await neuLaden();
+    },
     onError: (e: Error) => toast.error(`Löschen fehlgeschlagen: ${e.message}`),
   });
 
