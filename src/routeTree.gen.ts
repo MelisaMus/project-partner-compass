@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as ExportRouteImport } from './routes/export'
 import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
@@ -20,6 +21,10 @@ import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/c
 import { Route as AuthenticatedTermineRouteImport } from './routes/_authenticated/termine'
 import { Route as AuthenticatedUebersichtRouteImport } from './routes/_authenticated/uebersicht'
 
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExportRoute = ExportRouteImport.update({
   id: '/export',
   path: '/export',
@@ -41,37 +46,38 @@ const WochenberichtRoute = WochenberichtRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
+  id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBerichteRoute = AuthenticatedBerichteRouteImport.update({
-  id: '/_authenticated/berichte',
+  id: '/berichte',
   path: '/berichte',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBoardsRoute = AuthenticatedBoardsRouteImport.update({
-  id: '/_authenticated/boards',
+  id: '/boards',
   path: '/boards',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
-  id: '/_authenticated/chat',
+  id: '/chat',
   path: '/chat',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTermineRoute = AuthenticatedTermineRouteImport.update({
-  id: '/_authenticated/termine',
+  id: '/termine',
   path: '/termine',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedUebersichtRoute = AuthenticatedUebersichtRouteImport.update({
-  id: '/_authenticated/uebersicht',
+  id: '/uebersicht',
   path: '/uebersicht',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
@@ -81,7 +87,6 @@ export interface FileRoutesByFullPath {
   '/chat': typeof AuthenticatedChatRoute
   '/termine': typeof AuthenticatedTermineRoute
   '/uebersicht': typeof AuthenticatedUebersichtRoute
-  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
   '/export': typeof ExportRoute
@@ -97,6 +102,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
@@ -111,6 +117,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/export'
     | '/fristen'
     | '/partner'
@@ -120,7 +127,6 @@ export interface FileRouteTypes {
     | '/chat'
     | '/termine'
     | '/uebersicht'
-    | '/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/export'
@@ -135,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
   id:
     | '__root__'
+    | '/_authenticated'
     | '/export'
     | '/fristen'
     | '/partner'
@@ -148,20 +155,22 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ExportRoute: typeof ExportRoute
   FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
   WochenberichtRoute: typeof WochenberichtRoute
-  AuthenticatedBerichteRoute: typeof AuthenticatedBerichteRoute
-  AuthenticatedBoardsRoute: typeof AuthenticatedBoardsRoute
-  AuthenticatedChatRoute: typeof AuthenticatedChatRoute
-  AuthenticatedTermineRoute: typeof AuthenticatedTermineRoute
-  AuthenticatedUebersichtRoute: typeof AuthenticatedUebersichtRoute
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/export': {
       id: '/export'
       path: '/export'
@@ -195,57 +204,73 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/berichte': {
       id: '/_authenticated/berichte'
       path: '/berichte'
       fullPath: '/berichte'
       preLoaderRoute: typeof AuthenticatedBerichteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/boards': {
       id: '/_authenticated/boards'
       path: '/boards'
       fullPath: '/boards'
       preLoaderRoute: typeof AuthenticatedBoardsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/chat': {
       id: '/_authenticated/chat'
       path: '/chat'
       fullPath: '/chat'
       preLoaderRoute: typeof AuthenticatedChatRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/termine': {
       id: '/_authenticated/termine'
       path: '/termine'
       fullPath: '/termine'
       preLoaderRoute: typeof AuthenticatedTermineRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/uebersicht': {
       id: '/_authenticated/uebersicht'
       path: '/uebersicht'
       fullPath: '/uebersicht'
       preLoaderRoute: typeof AuthenticatedUebersichtRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  ExportRoute: ExportRoute,
-  FristenRoute: FristenRoute,
-  PartnerRoute: PartnerRoute,
-  WochenberichtRoute: WochenberichtRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBerichteRoute: typeof AuthenticatedBerichteRoute
+  AuthenticatedBoardsRoute: typeof AuthenticatedBoardsRoute
+  AuthenticatedChatRoute: typeof AuthenticatedChatRoute
+  AuthenticatedTermineRoute: typeof AuthenticatedTermineRoute
+  AuthenticatedUebersichtRoute: typeof AuthenticatedUebersichtRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBerichteRoute: AuthenticatedBerichteRoute,
   AuthenticatedBoardsRoute: AuthenticatedBoardsRoute,
   AuthenticatedChatRoute: AuthenticatedChatRoute,
   AuthenticatedTermineRoute: AuthenticatedTermineRoute,
   AuthenticatedUebersichtRoute: AuthenticatedUebersichtRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ExportRoute: ExportRoute,
+  FristenRoute: FristenRoute,
+  PartnerRoute: PartnerRoute,
+  WochenberichtRoute: WochenberichtRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
