@@ -42,6 +42,9 @@ export const Route = createFileRoute("/uebersicht")({
 
 type Gruppierung = "status" | "partner" | "frist";
 
+/** Statuswerte, die bei der Gruppierung nach Partner je Organisation gezählt werden. */
+const STATUS_ZAEHLER = ["Anbahnung", "Laufend", "Berichtspflicht fällig"] as const;
+
 const FRIST_GRUPPEN = [
   "Überfällig",
   "Diese Woche",
