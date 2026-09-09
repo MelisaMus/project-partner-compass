@@ -36,7 +36,7 @@ export async function dokumentHochladen(projektId: string, datei: File): Promise
   const pfad = `${projektId}/${Date.now()}-${sicherName(datei.name)}`;
   const { error: uploadFehler } = await supabase.storage
     .from(DOKUMENTE_BUCKET)
-    .upload(pfad, datei, { contentType: datei.type || undefined, upsert: false });
+    .upload(pfad, datei, datei.type ? { contentType: datei.type, upsert: false } : { upsert: false });
   if (uploadFehler) throw new Error(uploadFehler.message);
 
   const { error } = await supabase.from("dokumente").insert({
