@@ -28,7 +28,7 @@ npm run dev
 - React
 - Tailwind CSS
 
-## Partner Compass
+## Project Partner Compass
 
 Kanban-Board mit Chat-Abfrage zur Koordination von Teilprojekten mit mehreren
 externen Partnerorganisationen und parallelen Fristen.
