@@ -24,7 +24,7 @@ describe("berichtDateiname", () => {
 
 describe("datumText", () => {
   it("formatiert Datum und leere Werte", () => {
-    expect(datumText("2026-09-14")).toBe("14.9.2026");
+    expect(datumText("2026-09-14")).toBe("14.09.2026");
     expect(datumText(null)).toBe("–");
     expect(datumText("keine-zeit")).toBe("–");
   });
