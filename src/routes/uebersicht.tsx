@@ -158,6 +158,7 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
               {projekt.kurzbeschreibung?.trim() || "Keine Beschreibung hinterlegt."}
             </dd>
           </div>
+          <MeilensteinPlaner projektId={projekt.id} meilensteine={meilensteine} />
         </div>
       ) : null}
     </li>
