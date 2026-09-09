@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
+import { fristLabel, hatFristInnerhalb, tageBisFrist } from "./fristen";
+
 const FrageSchema = z.object({
   frage: z.string().min(1).max(2000),
   verlauf: z
@@ -35,16 +37,9 @@ type Karte = {
 };
 
 function kontextZeile(k: Karte, heute: Date): string {
-  let frist = "keine Frist";
-  if (k.naechste_frist) {
-    const ziel = new Date(`${k.naechste_frist.slice(0, 10)}T00:00:00Z`);
-    const tage = Math.round(
-      (Date.UTC(ziel.getUTCFullYear(), ziel.getUTCMonth(), ziel.getUTCDate()) -
-        Date.UTC(heute.getUTCFullYear(), heute.getUTCMonth(), heute.getUTCDate())) /
-        86400000,
-    );
-    frist = `${k.naechste_frist} (${tage < 0 ? `${Math.abs(tage)} Tage überfällig` : `in ${tage} Tagen`})`;
-  }
+  const tage = tageBisFrist(k.naechste_frist, heute);
+  const frist =
+    tage === null ? "keine Frist" : `${k.naechste_frist} (${fristLabel(k.naechste_frist, heute)})`;
   return [
     `- Titel: ${k.titel}`,
     `  Status: ${k.status}`,
@@ -92,16 +87,8 @@ export const boardFrage = createServerFn({ method: "POST" })
     const gefiltert = alleKarten.filter((k) => {
       if (filter?.status && k.status !== filter.status) return false;
       if (filter?.partner && (k.partnerorganisation ?? "") !== filter.partner) return false;
-      if (filter?.fristTage != null) {
-        if (!k.naechste_frist) return false;
-        const ziel = new Date(`${k.naechste_frist.slice(0, 10)}T00:00:00Z`);
-        const tage = Math.round(
-          (Date.UTC(ziel.getUTCFullYear(), ziel.getUTCMonth(), ziel.getUTCDate()) -
-            Date.UTC(heute.getUTCFullYear(), heute.getUTCMonth(), heute.getUTCDate())) /
-            86400000,
-        );
-        if (tage > filter.fristTage) return false;
-      }
+      if (filter?.fristTage != null && !hatFristInnerhalb(k.naechste_frist, filter.fristTage, heute))
+        return false;
       return true;
     });
 

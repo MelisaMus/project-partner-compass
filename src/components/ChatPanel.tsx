@@ -7,6 +7,7 @@ import Markdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { boardFrage } from "@/lib/chat.functions";
+import { hatFristInnerhalb } from "@/lib/fristen";
 import { STATUS_SPALTEN, projekteQueryOptions } from "@/lib/projekte";
 
 const FRIST_OPTIONEN = [
@@ -18,15 +19,6 @@ const FRIST_OPTIONEN = [
 const auswahlKlasse =
   "rounded-md border border-border bg-surface px-2 py-1.5 text-xs text-surface-foreground";
 
-function tageBis(datum: string): number {
-  const ziel = new Date(`${datum.slice(0, 10)}T00:00:00Z`);
-  const heute = new Date();
-  return Math.round(
-    (Date.UTC(ziel.getUTCFullYear(), ziel.getUTCMonth(), ziel.getUTCDate()) -
-      Date.UTC(heute.getUTCFullYear(), heute.getUTCMonth(), heute.getUTCDate())) /
-      86400000,
-  );
-}
 
 const BEISPIELFRAGEN = [
   "Welche Projekte haben in den nächsten vier Wochen eine Frist?",
@@ -57,10 +49,7 @@ export function ChatPanel() {
   const treffer = (projekte ?? []).filter((p) => {
     if (status && p.status !== status) return false;
     if (partner && (p.partnerorganisation ?? "") !== partner) return false;
-    if (fristTage) {
-      if (!p.naechste_frist) return false;
-      if (tageBis(p.naechste_frist) > Number(fristTage)) return false;
-    }
+    if (fristTage && !hatFristInnerhalb(p.naechste_frist, Number(fristTage))) return false;
     return true;
   });
 
