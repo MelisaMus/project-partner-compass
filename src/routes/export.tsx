@@ -1,15 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { FileDown } from "lucide-react";
+import { FileDown, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { dokumenteQueryOptions } from "@/lib/dokumente";
+import { DokumentListe } from "@/components/DokumentListe";
+import { dokumentHochladen, dokumenteQueryOptions } from "@/lib/dokumente";
 import { kontakteFuerPartner, kontakteQueryOptions } from "@/lib/kontakte";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
-import { datumText, projektBerichtExportieren } from "@/lib/projekt-pdf";
+import { berichtPdfDatei, datumText, projektBerichtExportieren } from "@/lib/projekt-pdf";
 import { projekteQueryOptions } from "@/lib/projekte";
 
 export const Route = createFileRoute("/export")({
@@ -51,6 +52,8 @@ function ExportSeite() {
 
   const [projektId, setProjektId] = useState<string>("");
   const [laeuft, setLaeuft] = useState(false);
+  const [speichert, setSpeichert] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!projektId && projekte.length > 0) setProjektId(projekte[0]!.id);
@@ -76,6 +79,24 @@ function ExportSeite() {
       );
     } finally {
       setLaeuft(false);
+    }
+  }
+
+  /** Legt den Bericht als PDF-Datei bei den Projektdokumenten ab. */
+  async function imProjektSpeichern() {
+    if (!projekt) return;
+    setSpeichert(true);
+    try {
+      const datei = await berichtPdfDatei({ projekt, meilensteine, dokumente, kontakte });
+      await dokumentHochladen(projekt.id, datei);
+      await queryClient.invalidateQueries({ queryKey: ["dokumente", projekt.id] });
+      toast.success(`Bericht im Projekt gespeichert: ${datei.name}`);
+    } catch (fehler) {
+      toast.error(
+        `Speichern fehlgeschlagen: ${fehler instanceof Error ? fehler.message : "Unbekannter Fehler"}`,
+      );
+    } finally {
+      setSpeichert(false);
     }
   }
 
@@ -123,6 +144,10 @@ function ExportSeite() {
             <FileDown className="mr-2 size-4" aria-hidden />
             {laeuft ? "Erstellt PDF…" : "Als PDF exportieren"}
           </Button>
+          <Button variant="secondary" onClick={imProjektSpeichern} disabled={!projekt || speichert}>
+            <Save className="mr-2 size-4" aria-hidden />
+            {speichert ? "Speichert…" : "Im Projekt speichern"}
+          </Button>
         </div>
 
         {projekt && (
@@ -166,7 +191,15 @@ function ExportSeite() {
               )}
             </Block>
 
-            <Block titel="Dokumente" anzahl={dokumente.length}>
+            <Block titel="Gespeicherte Berichte und Dateien" anzahl={dokumente.length}>
+              <p className="mb-3 text-xs text-muted-foreground">
+                Gespeicherte Berichte lassen sich hier jederzeit erneut öffnen, ohne das PDF neu zu
+                erzeugen.
+              </p>
+              <DokumentListe projektId={projekt.id} />
+            </Block>
+
+            <Block titel="Dokumente im Bericht" anzahl={dokumente.length}>
               {dokumente.length === 0 ? (
                 <p className="text-sm text-muted-foreground">Keine Dokumente hochgeladen.</p>
               ) : (
