@@ -23,6 +23,7 @@ import { Route as AuthenticatedBoardsRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
 import { Route as AuthenticatedTermineRouteImport } from './routes/_authenticated/termine'
 import { Route as AuthenticatedUebersichtRouteImport } from './routes/_authenticated/uebersicht'
+import { Route as AuthenticatedZugriffRouteImport } from './routes/_authenticated/zugriff'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -93,6 +94,11 @@ const AuthenticatedUebersichtRoute = AuthenticatedUebersichtRouteImport.update({
   path: '/uebersicht',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedZugriffRoute = AuthenticatedZugriffRouteImport.update({
+  id: '/zugriff',
+  path: '/zugriff',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof AuthenticatedChatRoute
   '/termine': typeof AuthenticatedTermineRoute
   '/uebersicht': typeof AuthenticatedUebersichtRoute
+  '/zugriff': typeof AuthenticatedZugriffRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/chat': typeof AuthenticatedChatRoute
   '/termine': typeof AuthenticatedTermineRoute
   '/uebersicht': typeof AuthenticatedUebersichtRoute
+  '/zugriff': typeof AuthenticatedZugriffRoute
   '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/_authenticated/chat': typeof AuthenticatedChatRoute
   '/_authenticated/termine': typeof AuthenticatedTermineRoute
   '/_authenticated/uebersicht': typeof AuthenticatedUebersichtRoute
+  '/_authenticated/zugriff': typeof AuthenticatedZugriffRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/termine'
     | '/uebersicht'
+    | '/zugriff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/termine'
     | '/uebersicht'
+    | '/zugriff'
     | '/'
   id:
     | '__root__'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/_authenticated/chat'
     | '/_authenticated/termine'
     | '/_authenticated/uebersicht'
+    | '/_authenticated/zugriff'
     | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
@@ -301,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUebersichtRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/zugriff': {
+      id: '/_authenticated/zugriff'
+      path: '/zugriff'
+      fullPath: '/zugriff'
+      preLoaderRoute: typeof AuthenticatedZugriffRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -310,6 +329,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedChatRoute: typeof AuthenticatedChatRoute
   AuthenticatedTermineRoute: typeof AuthenticatedTermineRoute
   AuthenticatedUebersichtRoute: typeof AuthenticatedUebersichtRoute
+  AuthenticatedZugriffRoute: typeof AuthenticatedZugriffRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
@@ -319,6 +339,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedChatRoute: AuthenticatedChatRoute,
   AuthenticatedTermineRoute: AuthenticatedTermineRoute,
   AuthenticatedUebersichtRoute: AuthenticatedUebersichtRoute,
+  AuthenticatedZugriffRoute: AuthenticatedZugriffRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
