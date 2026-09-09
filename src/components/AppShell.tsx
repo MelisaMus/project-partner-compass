@@ -48,6 +48,11 @@ export const BEREICHE: readonly Bereich[] = [
     icon: FileText,
     seiten: [{ to: "/berichte", label: "Berichte" }],
   },
+  {
+    label: "Zugriff",
+    icon: Users,
+    seiten: [{ to: "/zugriff", label: "Zugriff" }],
+  },
 ] as const;
 
 export function aktiverBereich(pfad: string): Bereich | undefined {
