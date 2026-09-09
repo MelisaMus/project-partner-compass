@@ -8,6 +8,8 @@ import { FristAlarm } from "@/components/FristAlarm";
 import { KartenDialog } from "@/components/KartenDialog";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
+import { Projektsituation } from "@/components/Projektsituation";
+
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
@@ -157,7 +159,10 @@ function Board() {
       </header>
 
       <div className="mx-auto max-w-7xl space-y-6 px-6 py-6">
+        <Projektsituation projekte={projekte} />
+
         <div className="grid gap-4 sm:grid-cols-3">
+
           <Kachel icon={<LayoutGrid className="size-5" aria-hidden />} wert={kennzahlen.gesamt} label="Projekte gesamt" />
           <Kachel
             icon={<CalendarClock className="size-5" aria-hidden />}
