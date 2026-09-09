@@ -13,6 +13,13 @@ const FrageSchema = z.object({
     )
     .max(20)
     .optional(),
+  filter: z
+    .object({
+      status: z.string().max(100).nullable().optional(),
+      partner: z.string().max(200).nullable().optional(),
+      fristTage: z.number().int().min(0).max(365).nullable().optional(),
+    })
+    .optional(),
 });
 
 type Karte = {
@@ -80,8 +87,33 @@ export const boardFrage = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     const heute = new Date();
-    const kontext =
-      (karten as Karte[] | null)?.map((k) => kontextZeile(k, heute)).join("\n") ?? "";
+    const filter = data.filter;
+    const alleKarten = (karten as Karte[] | null) ?? [];
+    const gefiltert = alleKarten.filter((k) => {
+      if (filter?.status && k.status !== filter.status) return false;
+      if (filter?.partner && (k.partnerorganisation ?? "") !== filter.partner) return false;
+      if (filter?.fristTage != null) {
+        if (!k.naechste_frist) return false;
+        const ziel = new Date(`${k.naechste_frist.slice(0, 10)}T00:00:00Z`);
+        const tage = Math.round(
+          (Date.UTC(ziel.getUTCFullYear(), ziel.getUTCMonth(), ziel.getUTCDate()) -
+            Date.UTC(heute.getUTCFullYear(), heute.getUTCMonth(), heute.getUTCDate())) /
+            86400000,
+        );
+        if (tage > filter.fristTage) return false;
+      }
+      return true;
+    });
+
+    const filterZeilen = [
+      filter?.status ? `Status: ${filter.status}` : null,
+      filter?.partner ? `Partnerorganisation: ${filter.partner}` : null,
+      filter?.fristTage != null
+        ? `Frist: fällig innerhalb von ${filter.fristTage} Tagen (inkl. überfällig)`
+        : null,
+    ].filter(Boolean) as string[];
+
+    const kontext = gefiltert.map((k) => kontextZeile(k, heute)).join("\n");
 
     const instructions = [
       "Du bist der Assistent des Kanban-Boards 'Partner Compass' für die Koordination von Projekten mit mehreren externen Partnerorganisationen.",
@@ -91,8 +123,12 @@ export const boardFrage = createServerFn({ method: "POST" })
       "Wenn die Board-Daten die Frage nicht abdecken, sage das offen und beantworte die Frage danach mit deinem allgemeinen Wissen zu Projektkoordination, Fristenmanagement und Zusammenarbeit mit externen Partnern.",
       "Bei allgemeinen Fragen ohne Bezug zum Board antworte einfach hilfreich und weise nicht auf die Board-Daten hin.",
       "",
+      filterZeilen.length > 0
+        ? `Der Nutzer hat die Board-Daten gefiltert (${filterZeilen.join("; ")}). Beziehe dich nur auf diese Karten und halte die Antwort besonders knapp.`
+        : "",
+      "",
       "BOARD-DATEN:",
-      kontext || "(keine Karten vorhanden)",
+      kontext || "(keine Karten passen zu den gewählten Filtern)",
     ].join("\n");
 
     const eingaben = [

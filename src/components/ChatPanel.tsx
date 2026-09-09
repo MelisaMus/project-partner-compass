@@ -1,5 +1,5 @@
 import { useServerFn } from "@tanstack/react-start";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
@@ -7,6 +7,26 @@ import Markdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { boardFrage } from "@/lib/chat.functions";
+import { STATUS_SPALTEN, projekteQueryOptions } from "@/lib/projekte";
+
+const FRIST_OPTIONEN = [
+  { wert: "7", label: "Frist in 7 Tagen" },
+  { wert: "14", label: "Frist in 14 Tagen" },
+  { wert: "28", label: "Frist in 4 Wochen" },
+];
+
+const auswahlKlasse =
+  "rounded-md border border-border bg-surface px-2 py-1.5 text-xs text-surface-foreground";
+
+function tageBis(datum: string): number {
+  const ziel = new Date(`${datum.slice(0, 10)}T00:00:00Z`);
+  const heute = new Date();
+  return Math.round(
+    (Date.UTC(ziel.getUTCFullYear(), ziel.getUTCMonth(), ziel.getUTCDate()) -
+      Date.UTC(heute.getUTCFullYear(), heute.getUTCMonth(), heute.getUTCDate())) /
+      86400000,
+  );
+}
 
 const BEISPIELFRAGEN = [
   "Welche Projekte haben in den nächsten vier Wochen eine Frist?",
@@ -23,6 +43,26 @@ export function ChatPanel() {
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
   const [geladen, setGeladen] = useState(false);
+  const [status, setStatus] = useState("");
+  const [partner, setPartner] = useState("");
+  const [fristTage, setFristTage] = useState("");
+
+  const { data: projekte } = useQuery(projekteQueryOptions);
+
+  const partnerListe = Array.from(
+    new Set((projekte ?? []).map((p) => p.partnerorganisation).filter((v): v is string => !!v)),
+  ).sort((a, b) => a.localeCompare(b, "de"));
+
+  const filterAktiv = Boolean(status || partner || fristTage);
+  const treffer = (projekte ?? []).filter((p) => {
+    if (status && p.status !== status) return false;
+    if (partner && (p.partnerorganisation ?? "") !== partner) return false;
+    if (fristTage) {
+      if (!p.naechste_frist) return false;
+      if (tageBis(p.naechste_frist) > Number(fristTage)) return false;
+    }
+    return true;
+  });
 
   // Gespräch bleibt beim Wechsel zwischen Board, Übersicht und Chat erhalten.
   useEffect(() => {
@@ -49,7 +89,17 @@ export function ChatPanel() {
 
   const mutation = useMutation({
     mutationFn: async (frage: string) =>
-      frageStellen({ data: { frage, verlauf: verlauf.slice(-10) } }),
+      frageStellen({
+        data: {
+          frage,
+          verlauf: verlauf.slice(-10),
+          filter: {
+            status: status || null,
+            partner: partner || null,
+            fristTage: fristTage ? Number(fristTage) : null,
+          },
+        },
+      }),
     onSuccess: (ergebnis) => {
       setVerlauf((alt) => [...alt, { rolle: "antwort", text: ergebnis.antwort }]);
     },
@@ -93,6 +143,66 @@ export function ChatPanel() {
         Fragen zum aktuellen Stand – beantwortet von einer KI auf Basis der Karten dieses Boards,
         Rückfragen im Gespräch möglich.
       </p>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <select
+          aria-label="Status filtern"
+          className={auswahlKlasse}
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option value="">Alle Status</option>
+          {STATUS_SPALTEN.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Partnerorganisation filtern"
+          className={auswahlKlasse}
+          value={partner}
+          onChange={(e) => setPartner(e.target.value)}
+        >
+          <option value="">Alle Partner</option>
+          {partnerListe.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Frist filtern"
+          className={auswahlKlasse}
+          value={fristTage}
+          onChange={(e) => setFristTage(e.target.value)}
+        >
+          <option value="">Alle Fristen</option>
+          {FRIST_OPTIONEN.map((o) => (
+            <option key={o.wert} value={o.wert}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+        {filterAktiv ? (
+          <>
+            <span className="text-xs text-muted-foreground">
+              {treffer.length} von {(projekte ?? []).length} Projekten
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setStatus("");
+                setPartner("");
+                setFristTage("");
+              }}
+              className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+            >
+              Filter zurücksetzen
+            </button>
+          </>
+        ) : null}
+      </div>
 
       <div className="mt-4 space-y-3">
         {verlauf.map((n, i) => (
