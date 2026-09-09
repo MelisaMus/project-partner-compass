@@ -2,7 +2,18 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
-const FrageSchema = z.object({ frage: z.string().min(1).max(1000) });
+const FrageSchema = z.object({
+  frage: z.string().min(1).max(2000),
+  verlauf: z
+    .array(
+      z.object({
+        rolle: z.enum(["frage", "antwort"]),
+        text: z.string().min(1).max(8000),
+      }),
+    )
+    .max(20)
+    .optional(),
+});
 
 type Karte = {
   titel: string;
