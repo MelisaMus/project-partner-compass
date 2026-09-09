@@ -22,7 +22,8 @@ export function ChatPanel() {
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
 
   const mutation = useMutation({
-    mutationFn: async (frage: string) => frageStellen({ data: { frage } }),
+    mutationFn: async (frage: string) =>
+      frageStellen({ data: { frage, verlauf: verlauf.slice(-10) } }),
     onSuccess: (ergebnis) => {
       setVerlauf((alt) => [...alt, { rolle: "antwort", text: ergebnis.antwort }]);
     },
