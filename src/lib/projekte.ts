@@ -30,6 +30,7 @@ export type Projekt = {
   naechste_frist: string | null;
   foerdermittelbezug: string | null;
   kurzbeschreibung: string | null;
+  board_id: string | null;
   letzte_aktualisierung: string;
 };
 
@@ -45,6 +46,7 @@ export const leeresProjekt: ProjektEingabe = {
   naechste_frist: null,
   foerdermittelbezug: "",
   kurzbeschreibung: "",
+  board_id: null,
 };
 
 export const projekteQueryOptions = {

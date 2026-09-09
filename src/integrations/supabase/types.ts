@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      boards: {
+        Row: {
+          beschreibung: string | null
+          created_at: string
+          id: string
+          letzte_aktualisierung: string
+          name: string
+          sortierung: number
+        }
+        Insert: {
+          beschreibung?: string | null
+          created_at?: string
+          id?: string
+          letzte_aktualisierung?: string
+          name: string
+          sortierung?: number
+        }
+        Update: {
+          beschreibung?: string | null
+          created_at?: string
+          id?: string
+          letzte_aktualisierung?: string
+          name?: string
+          sortierung?: number
+        }
+        Relationships: []
+      }
       meilensteine: {
         Row: {
           created_at: string
@@ -60,6 +87,7 @@ export type Database = {
       }
       projekte: {
         Row: {
+          board_id: string | null
           created_at: string
           foerdermittelbezug: string | null
           id: string
@@ -74,6 +102,7 @@ export type Database = {
           verantwortliche_person: string | null
         }
         Insert: {
+          board_id?: string | null
           created_at?: string
           foerdermittelbezug?: string | null
           id?: string
@@ -88,6 +117,7 @@ export type Database = {
           verantwortliche_person?: string | null
         }
         Update: {
+          board_id?: string | null
           created_at?: string
           foerdermittelbezug?: string | null
           id?: string
@@ -101,7 +131,15 @@ export type Database = {
           titel?: string
           verantwortliche_person?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "projekte_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "boards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
