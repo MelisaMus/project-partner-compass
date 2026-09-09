@@ -6,7 +6,7 @@ import { Reiter } from "@/components/Reiter";
 
 type ChatSuche = { frage?: string | undefined };
 
-export const Route = createFileRoute("/chat")({
+export const Route = createFileRoute("/_authenticated/chat")({
   validateSearch: (suche: Record<string, unknown>): ChatSuche => ({
     frage: typeof suche['frage'] === "string" ? (suche['frage'] as string).slice(0, 500) : undefined,
   }),
