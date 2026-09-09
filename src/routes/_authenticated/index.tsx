@@ -13,6 +13,7 @@ import { Projektsituation } from "@/components/Projektsituation";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel } from "@/lib/fristen";
+import { useDarfBearbeiten } from "@/lib/rollen";
 import { meilensteineQueryOptions, naechsterOffenerMeilenstein } from "@/lib/meilensteine";
 import { AMPEL_KLASSEN } from "@/lib/darstellung";
 import {
@@ -54,6 +55,7 @@ function Board() {
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
   const { data: alleMeilensteine } = useQuery(meilensteineQueryOptions);
 
+  const darfBearbeiten = useDarfBearbeiten();
   const [dialogOffen, setDialogOffen] = useState(false);
   const [aktuelleKarte, setAktuelleKarte] = useState<Projekt | null>(null);
   const [ziehtId, setZiehtId] = useState<string | null>(null);
@@ -109,6 +111,7 @@ function Board() {
           <div className="flex flex-wrap items-center gap-2">
             <Reiter />
             <PdfExportButton projekte={projekte} />
+            {darfBearbeiten ? (
             <Button
               onClick={() => {
                 setAktuelleKarte(null);
@@ -117,8 +120,16 @@ function Board() {
             >
               <Plus className="size-4" aria-hidden /> Neue Karte
             </Button>
+            ) : null}
           </div>
         </div>
+
+        {!darfBearbeiten ? (
+          <p className="mb-4 rounded-xl border border-border bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
+            Nur-Lesen-Zugang: Karten, Termine und Dateien können angesehen, aber nicht geändert
+            werden.
+          </p>
+        ) : null}
 
         <Projektsituation projekte={projekte} />
       </header>
@@ -190,7 +201,7 @@ function Board() {
                       return (
                         <article
                           key={karte.id}
-                          draggable
+                          draggable={darfBearbeiten}
                           onDragStart={() => setZiehtId(karte.id)}
                           onDragEnd={() => setZiehtId(null)}
                           onClick={() => {
