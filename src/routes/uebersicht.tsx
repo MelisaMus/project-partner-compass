@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { Building2, CalendarClock, ChevronRight, Compass, ListTree } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { Building2, CalendarClock, ChevronRight, Compass, ListTree, MessageCircleQuestion } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { ChatPanel } from "@/components/ChatPanel";
@@ -110,6 +110,7 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
 
   return (
     <li className="rounded-lg border border-border bg-card">
+      <div className="flex items-center gap-1 pr-2">
       <button
         type="button"
         onClick={() => setOffen((alt) => !alt)}
@@ -145,6 +146,16 @@ function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meil
           {fristText(projekt.naechste_frist)}
         </span>
       </button>
+      <Link
+        to="/chat"
+        search={{ frage: `Wie ist der aktuelle Stand von „${projekt.titel}“?` }}
+        title="Frage zu diesem Projekt im Chat stellen"
+        className="flex shrink-0 items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-xs text-surface-foreground transition-colors hover:bg-secondary"
+      >
+        <MessageCircleQuestion className="size-4" aria-hidden />
+        Frage
+      </Link>
+      </div>
 
       {offen ? (
         <div id={detailId} className="border-t border-border bg-surface px-3 py-3">

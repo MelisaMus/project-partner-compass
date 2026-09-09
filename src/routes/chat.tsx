@@ -4,7 +4,12 @@ import { Compass } from "lucide-react";
 import { ChatPanel } from "@/components/ChatPanel";
 import { Reiter } from "@/components/Reiter";
 
+type ChatSuche = { frage?: string | undefined };
+
 export const Route = createFileRoute("/chat")({
+  validateSearch: (suche: Record<string, unknown>): ChatSuche => ({
+    frage: typeof suche['frage'] === "string" ? (suche['frage'] as string).slice(0, 500) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Chat zum Projektstand – Project Partner Compass" },
@@ -26,6 +31,8 @@ export const Route = createFileRoute("/chat")({
 });
 
 function ChatSeite() {
+  const { frage } = Route.useSearch();
+
   return (
     <main className="min-h-screen">
       <header className="border-b border-border bg-card">
@@ -46,7 +53,7 @@ function ChatSeite() {
       </header>
 
       <div className="mx-auto max-w-4xl space-y-4 px-6 py-6">
-        <ChatPanel />
+        <ChatPanel startFrage={frage} />
         <p className="text-xs text-muted-foreground">
           Alle Beispielkarten sind fiktiv. Antworten beruhen auf den aktuellen Karten des Boards.
         </p>
