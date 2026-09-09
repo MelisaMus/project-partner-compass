@@ -93,14 +93,6 @@ function Board() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const kennzahlen = useMemo(
-    () => ({
-      gesamt: projekte.length,
-      fristZweiWochen: projekte.filter((p) => hatFristInnerhalb(p.naechste_frist, 14)).length,
-      berichtspflicht: projekte.filter((p) => p.status === "Berichtspflicht fällig").length,
-    }),
-    [projekte],
-  );
 
   return (
     <main className="min-h-screen">
