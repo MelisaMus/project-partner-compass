@@ -2,6 +2,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
+import Markdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -61,10 +62,10 @@ export function ChatPanel() {
             className={
               n.rolle === "frage"
                 ? "ml-auto max-w-[85%] rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground"
-                : "max-w-[95%] rounded-lg bg-surface px-3 py-2 text-sm whitespace-pre-wrap text-surface-foreground"
+                : "max-w-[95%] space-y-2 rounded-lg bg-surface px-3 py-2 text-sm text-surface-foreground [&_li]:ml-4 [&_li]:list-disc [&_strong]:font-semibold"
             }
           >
-            {n.text}
+            {n.rolle === "antwort" ? <Markdown>{n.text}</Markdown> : n.text}
           </div>
         ))}
         {mutation.isPending ? (
