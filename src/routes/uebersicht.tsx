@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 
 import { ChatPanel } from "@/components/ChatPanel";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
+import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
 import { fristAmpel, fristLabel, tageBisFrist, type FristAmpel } from "@/lib/fristen";
@@ -210,7 +211,10 @@ function Uebersicht() {
               </p>
             </div>
           </div>
-          <Reiter />
+          <div className="flex flex-wrap items-center gap-2">
+            <Reiter />
+            <PdfExportButton projekte={projekte} />
+          </div>
         </div>
       </header>
 
