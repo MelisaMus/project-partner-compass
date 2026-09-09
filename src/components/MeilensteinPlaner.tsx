@@ -13,6 +13,7 @@ import {
   meilensteinLoeschen,
   type Meilenstein,
 } from "@/lib/meilensteine";
+import { useDarfBearbeiten } from "@/lib/rollen";
 
 
 
@@ -24,6 +25,7 @@ export function MeilensteinPlaner({
   meilensteine: Meilenstein[];
 }) {
   const queryClient = useQueryClient();
+  const darfBearbeiten = useDarfBearbeiten();
   const [titel, setTitel] = useState("");
   const [frist, setFrist] = useState("");
 
@@ -108,6 +110,7 @@ export function MeilensteinPlaner({
                 <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}>
                   {m.erledigt ? "erledigt" : fristText(m.frist)}
                 </span>
+                {darfBearbeiten ? (
                 <button
                   type="button"
                   onClick={() => loeschen.mutate(m.id)}
@@ -116,12 +119,14 @@ export function MeilensteinPlaner({
                 >
                   <Trash2 className="size-4" aria-hidden />
                 </button>
+                ) : null}
               </li>
             );
           })}
         </ul>
       )}
 
+      {darfBearbeiten ? (
       <form
         className="mt-3 flex flex-wrap items-end gap-2"
         onSubmit={(e) => {
@@ -155,6 +160,7 @@ export function MeilensteinPlaner({
           <Plus className="size-4" aria-hidden /> Hinzufügen
         </Button>
       </form>
+      ) : null}
     </div>
   );
 }

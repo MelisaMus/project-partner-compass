@@ -12,6 +12,7 @@ import {
   kontakteQueryOptions,
   telefonLink,
 } from "@/lib/kontakte";
+import { useDarfBearbeiten } from "@/lib/rollen";
 
 export function KontaktListe({ partnerorganisation }: { partnerorganisation: string | null }) {
   const queryClient = useQueryClient();
@@ -19,6 +20,7 @@ export function KontaktListe({ partnerorganisation }: { partnerorganisation: str
   const partner = (partnerorganisation ?? "").trim();
   const kontakte = kontakteFuerPartner(alle, partner);
 
+  const darfBearbeiten = useDarfBearbeiten();
   const [name, setName] = useState("");
   const [rolle, setRolle] = useState("");
   const [email, setEmail] = useState("");
@@ -104,6 +106,7 @@ export function KontaktListe({ partnerorganisation }: { partnerorganisation: str
                         {kontakt.telefon}
                       </a>
                     ) : null}
+                    {darfBearbeiten ? (
                     <button
                       type="button"
                       onClick={() => loeschen.mutate(kontakt.id)}
@@ -112,12 +115,15 @@ export function KontaktListe({ partnerorganisation }: { partnerorganisation: str
                     >
                       <Trash2 className="size-4" aria-hidden />
                     </button>
+                    ) : null}
                   </span>
                 </li>
               ))}
             </ul>
           )}
 
+          {darfBearbeiten ? (
+          <>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             <Input
               value={name}
@@ -154,6 +160,8 @@ export function KontaktListe({ partnerorganisation }: { partnerorganisation: str
           >
             {anlegen.isPending ? "Speichern…" : "Kontakt hinzufügen"}
           </Button>
+          </>
+          ) : null}
         </>
       )}
     </div>
