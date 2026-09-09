@@ -82,6 +82,42 @@ export type Database = {
           },
         ]
       }
+      kontakte: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          letzte_aktualisierung: string
+          name: string
+          notiz: string | null
+          partnerorganisation: string
+          rolle: string | null
+          telefon: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          letzte_aktualisierung?: string
+          name: string
+          notiz?: string | null
+          partnerorganisation: string
+          rolle?: string | null
+          telefon?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          letzte_aktualisierung?: string
+          name?: string
+          notiz?: string | null
+          partnerorganisation?: string
+          rolle?: string | null
+          telefon?: string | null
+        }
+        Relationships: []
+      }
       meilensteine: {
         Row: {
           created_at: string
