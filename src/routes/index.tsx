@@ -12,7 +12,7 @@ import { Projektsituation } from "@/components/Projektsituation";
 
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel, hatFristInnerhalb } from "@/lib/fristen";
 import { meilensteineQueryOptions, naechsterOffenerMeilenstein } from "@/lib/meilensteine";
 import { AMPEL_KLASSEN } from "@/lib/darstellung";
 import {

@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 
 import { Reiter } from "@/components/Reiter";
 import { useAlarmEinstellungen } from "@/lib/alarm-einstellungen";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import { projekteQueryOptions } from "@/lib/projekte";
 import { wochenberichtErstellen, type BerichtGruppe } from "@/lib/wochenbericht";

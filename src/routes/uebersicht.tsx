@@ -9,7 +9,7 @@ import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { fristAmpel, fristLabel, tageBisFrist, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel, tageBisFrist } from "@/lib/fristen";
 import {
   meilensteineQueryOptions,
   naechsterOffenerMeilenstein,

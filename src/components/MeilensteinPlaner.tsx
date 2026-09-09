@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel } from "@/lib/fristen";
 import { AMPEL_KLASSEN, fristText } from "@/lib/darstellung";
 import {
   meilensteinAktualisieren,

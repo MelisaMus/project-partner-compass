@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { meilensteineQueryOptions, type Meilenstein } from "@/lib/meilensteine";
 import { projekteQueryOptions, type Projekt } from "@/lib/projekte";
 import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
