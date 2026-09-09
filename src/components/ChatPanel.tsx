@@ -30,7 +30,7 @@ type Nachricht = { rolle: "frage" | "antwort"; text: string };
 
 const SPEICHER_SCHLUESSEL = "partner-compass-chat-verlauf";
 
-export function ChatPanel() {
+export function ChatPanel({ startFrage }: { startFrage?: string } = {}) {
   const frageStellen = useServerFn(boardFrage);
   const [eingabe, setEingabe] = useState("");
   const [verlauf, setVerlauf] = useState<Nachricht[]>([]);
@@ -63,6 +63,11 @@ export function ChatPanel() {
     }
     setGeladen(true);
   }, []);
+
+  // Vorbelegte Frage aus der Übersicht übernehmen.
+  useEffect(() => {
+    if (startFrage) setEingabe(startFrage);
+  }, [startFrage]);
 
   useEffect(() => {
     if (!geladen) return;
