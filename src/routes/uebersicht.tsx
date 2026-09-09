@@ -210,7 +210,10 @@ function Uebersicht() {
               </p>
             </div>
           </div>
-          <Reiter />
+          <div className="flex flex-wrap items-center gap-2">
+            <Reiter />
+            <PdfExportButton projekte={projekte} />
+          </div>
         </div>
       </header>
 
