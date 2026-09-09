@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { CalendarClock, Compass, FileWarning, LayoutGrid, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { FristAlarm } from "@/components/FristAlarm";
