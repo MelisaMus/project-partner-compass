@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarClock, Compass, FileWarning, LayoutGrid, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -135,14 +135,19 @@ function Board() {
               </p>
             </div>
           </div>
-          <Button
-            onClick={() => {
-              setAktuelleKarte(null);
-              setDialogOffen(true);
-            }}
-          >
-            <Plus className="size-4" aria-hidden /> Neue Karte
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button asChild variant="outline">
+              <Link to="/uebersicht">Übersicht</Link>
+            </Button>
+            <Button
+              onClick={() => {
+                setAktuelleKarte(null);
+                setDialogOffen(true);
+              }}
+            >
+              <Plus className="size-4" aria-hidden /> Neue Karte
+            </Button>
+          </div>
         </div>
       </header>
 
