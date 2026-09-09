@@ -25,7 +25,7 @@ export function berichtDateiname(titel: string, heute: Date = new Date()): strin
 }
 
 /** Erzeugt den Partnerbericht als PDF und startet den Download im Browser. */
-export async function projektBerichtExportieren(daten: BerichtDaten): Promise<string> {
+async function berichtErzeugen(daten: BerichtDaten) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const breite = doc.internal.pageSize.getWidth();
