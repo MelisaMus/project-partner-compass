@@ -214,6 +214,8 @@ function Uebersicht() {
       </header>
 
       <div className="mx-auto max-w-5xl space-y-6 px-6 py-6">
+        <ChatPanel />
+
         <div className="flex flex-wrap gap-2" role="group" aria-label="Gruppierung wählen">
           {knoepfe.map((k) => (
             <Button
