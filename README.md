@@ -9,16 +9,18 @@ Projektstand direkt aus den Board-Daten, statt sich durch alle Karten zu klicken
 
 ## Funktionen
 
-Die Navigation ist in fünf Bereiche gegliedert (verwandte Seiten liegen als
-Unterreiter zusammen):
+Die Navigation besteht aus fünf Bereichen:
 
 | Bereich | Seiten | Inhalt |
 | --- | --- | --- |
 | Board | `/`, `/boards` | Kanban-Board mit Statusspalten und Drag & Drop; zusätzliche Boards/Projektkategorien |
-| Übersicht | `/uebersicht`, `/partner` | Projektliste gruppiert nach Status, Partner oder Frist inkl. Detailpanel, Dokumenten und Chat-Feld; Auswertung pro Partnerorganisation |
-| Termine & Fristen | `/termine`, `/fristen` | Meilenstein-Planer pro Projekt; Alarm für überfällige und bald fällige Fristen |
+| Übersicht | `/uebersicht` | Projektliste gruppiert nach Status, Partnerorganisation (mit Statuszählung) oder Frist – inkl. Detailpanel, Meilensteinen, Dokumenten und Chat-Feld |
+| Termine & Fristen | `/termine` | Frist-Alarm mit Einstellungen sowie Meilenstein-Planer je Projekt |
 | Chat | `/chat` | Fragen zum Projektstand mit Verlauf |
-| Berichte | `/wochenbericht`, `/export` | Wochenbericht-Vorschau (montags 07:00 geplant); PDF-Export einzelner Projekte und der Gesamtliste |
+| Berichte | `/berichte` | Wochenbericht-Vorschau (montags 07:00 geplant) und PDF-Export einzelner Projekte |
+
+Ältere Adressen bleiben gültig und leiten weiter: `/partner` → `/uebersicht`,
+`/fristen` → `/termine`, `/wochenbericht` und `/export` → `/berichte`.
 
 ### Kernlogik
 

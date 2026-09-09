@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays } from "lucide-react";
 import { useMemo } from "react";
 
+import { FristAlarmPanel } from "@/components/FristAlarmPanel";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
 import { fristAmpel, fristLabel } from "@/lib/fristen";
@@ -13,20 +14,22 @@ import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 export const Route = createFileRoute("/termine")({
   head: () => ({
     meta: [
-      { title: "Terminplaner – Project Partner Compass" },
+      { title: "Termine & Fristen – Project Partner Compass" },
       {
         name: "description",
         content:
-          "Eigene Termine je Projekt planen – Kick-off, Berichtsfristen und Abstimmungen, chronologisch gelistet.",
+          "Termine je Projekt planen und alle überfälligen oder bald fälligen Fristen im Blick behalten.",
       },
-      { property: "og:title", content: "Terminplaner – Project Partner Compass" },
+      { property: "og:title", content: "Termine & Fristen – Project Partner Compass" },
       {
         property: "og:description",
-        content: "Alle Projekttermine an einem Ort: anlegen, abhaken und chronologisch verfolgen.",
+        content:
+          "Kick-off, Berichtsfristen und Frist-Alarm für alle Teilprojekte auf einer Seite.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "/termine" }],
   }),
   component: TerminePlanerSeite,
 });
@@ -71,9 +74,9 @@ function TerminePlanerSeite() {
               <CalendarDays className="size-6" aria-hidden />
             </span>
             <div>
-              <h1 className="text-2xl font-semibold">Terminplaner</h1>
+              <h1 className="text-2xl font-semibold">Termine & Fristen</h1>
               <p className="text-sm text-muted-foreground">
-                Eigene Termine je Projekt – z. B. Kick-off oder Berichtsfrist
+                Termine je Projekt planen – Kick-off, Berichtsfrist – und alle nahen Fristen im Blick
               </p>
             </div>
           </div>
@@ -88,6 +91,13 @@ function TerminePlanerSeite() {
           </p>
         ) : null}
         {isLoading ? <p className="text-sm text-muted-foreground">Lädt…</p> : null}
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Frist-Alarm</h2>
+          <FristAlarmPanel />
+        </section>
+
+
 
         <section className="rounded-xl border border-border bg-card p-5 shadow-card">
           <h2 className="text-lg font-semibold">Nächste Termine</h2>

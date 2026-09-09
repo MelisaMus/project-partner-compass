@@ -31,27 +31,18 @@ export const BEREICHE: readonly Bereich[] = [
   {
     label: "Übersicht",
     icon: Compass,
-    seiten: [
-      { to: "/uebersicht", label: "Projekte" },
-      { to: "/partner", label: "Partner" },
-    ],
+    seiten: [{ to: "/uebersicht", label: "Übersicht" }],
   },
   {
     label: "Termine & Fristen",
     icon: CalendarDays,
-    seiten: [
-      { to: "/termine", label: "Termine" },
-      { to: "/fristen", label: "Frist-Alarm" },
-    ],
+    seiten: [{ to: "/termine", label: "Termine & Fristen" }],
   },
   { label: "Chat", icon: MessageSquare, seiten: [{ to: "/chat", label: "Chat" }] },
   {
     label: "Berichte",
     icon: FileText,
-    seiten: [
-      { to: "/wochenbericht", label: "Wochenbericht" },
-      { to: "/export", label: "PDF-Export" },
-    ],
+    seiten: [{ to: "/berichte", label: "Berichte" }],
   },
 ] as const;
 

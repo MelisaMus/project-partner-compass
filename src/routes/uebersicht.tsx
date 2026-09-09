@@ -42,6 +42,9 @@ export const Route = createFileRoute("/uebersicht")({
 
 type Gruppierung = "status" | "partner" | "frist";
 
+/** Statuswerte, die bei der Gruppierung nach Partner je Organisation gezählt werden. */
+const STATUS_ZAEHLER = ["Anbahnung", "Laufend", "Berichtspflicht fällig"] as const;
+
 const FRIST_GRUPPEN = [
   "Überfällig",
   "Diese Woche",
@@ -252,6 +255,22 @@ function Uebersicht() {
                 {abschnitt.karten.length}
               </span>
             </div>
+            {modus === "partner" && abschnitt.karten.length > 0 ? (
+              <div className="grid gap-2 sm:grid-cols-3">
+                {STATUS_ZAEHLER.map((status) => (
+                  <div
+                    key={status}
+                    className="rounded-lg border border-border bg-surface px-3 py-2"
+                  >
+                    <p className="text-xs text-muted-foreground">{status}</p>
+                    <p className="text-xl font-semibold">
+                      {abschnitt.karten.filter((p) => p.status === status).length}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
             {abschnitt.karten.length === 0 ? (
               <p className="rounded-lg border border-dashed border-border px-3 py-3 text-xs text-muted-foreground">
                 Keine Projekte in dieser Gruppe
