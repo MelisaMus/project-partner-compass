@@ -138,6 +138,7 @@ function Board() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Reiter />
+            <PdfExportButton projekte={projekte} />
             <Button
               onClick={() => {
                 setAktuelleKarte(null);
