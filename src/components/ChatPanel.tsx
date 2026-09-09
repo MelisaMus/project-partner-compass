@@ -74,10 +74,21 @@ export function ChatPanel() {
       aria-label="Statusabfrage"
       className="rounded-xl border border-border bg-card p-5 shadow-card"
     >
-      <h2 className="flex items-center gap-2 text-lg font-semibold">
-        <Sparkles className="size-4 text-accent" aria-hidden />
-        Status abfragen
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="flex items-center gap-2 text-lg font-semibold">
+          <Sparkles className="size-4 text-accent" aria-hidden />
+          Status abfragen
+        </h2>
+        {verlauf.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => setVerlauf([])}
+            className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+          >
+            Gespräch zurücksetzen
+          </button>
+        ) : null}
+      </div>
       <p className="mt-1 text-sm text-muted-foreground">
         Fragen zum aktuellen Stand – beantwortet von einer KI auf Basis der Karten dieses Boards,
         Rückfragen im Gespräch möglich.
