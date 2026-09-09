@@ -96,11 +96,16 @@ gehört ausschließlich in die Serverumgebung und niemals ins Repository.
 - Das Tool ist als **generisches Konzept für Multi-Partner-Projektkoordination**
   gedacht und nicht an eine bestimmte Institution gebunden.
 - **Zugriff nur mit Anmeldung:** Alle Inhalte liegen hinter `/auth`
-  (E-Mail und Passwort). Die Registrierung ist geschlossen – Zugänge werden im
-  Backend angelegt (Einladung). Angemeldete Personen arbeiten in einem
-  gemeinsamen Datenraum und sehen alle Projekte, Kontakte und Dokumente.
-  Projektdateien im Ablage-Bereich sind privat und nur für angemeldete Personen
-  über zeitlich begrenzte Links erreichbar.
+  (E-Mail und Passwort). Die Registrierung ist geschlossen – Zugänge werden auf
+  der Seite **Zugriff** von einer Person mit der Rolle `verwaltung` angelegt.
+  Angemeldete Personen arbeiten in einem gemeinsamen Datenraum und sehen alle
+  Projekte, Kontakte und Dokumente. Projektdateien sind privat und nur über
+  zeitlich begrenzte Links erreichbar.
+- **Zwei Rollen** (Tabelle `rollen`): `verwaltung` darf anlegen, ändern und
+  löschen; `lesen` darf ausschließlich ansehen. Die Regel gilt in der Datenbank
+  (Row Level Security) und wird zusätzlich in der Oberfläche abgebildet.
+- **Öffentlicher Demo-Einblick** unter `/demo`: eine Nur-Lesen-Vorschau mit
+  fest eingebauten fiktiven Beispielkarten, ohne Zugriff auf echte Daten.
 - Der automatische E-Mail-Versand des Wochenberichts ist vorbereitet, aber noch
   nicht aktiv – dafür wird eine eigene Absender-Domain benötigt.
 
