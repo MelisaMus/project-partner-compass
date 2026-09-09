@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      projekte: {
+        Row: {
+          created_at: string
+          foerdermittelbezug: string | null
+          id: string
+          kurzbeschreibung: string | null
+          letzte_aktualisierung: string
+          naechste_frist: string | null
+          partner_typ: string
+          partnerorganisation: string | null
+          status: string
+          themenbereich: string | null
+          titel: string
+          verantwortliche_person: string | null
+        }
+        Insert: {
+          created_at?: string
+          foerdermittelbezug?: string | null
+          id?: string
+          kurzbeschreibung?: string | null
+          letzte_aktualisierung?: string
+          naechste_frist?: string | null
+          partner_typ?: string
+          partnerorganisation?: string | null
+          status?: string
+          themenbereich?: string | null
+          titel: string
+          verantwortliche_person?: string | null
+        }
+        Update: {
+          created_at?: string
+          foerdermittelbezug?: string | null
+          id?: string
+          kurzbeschreibung?: string | null
+          letzte_aktualisierung?: string
+          naechste_frist?: string | null
+          partner_typ?: string
+          partnerorganisation?: string | null
+          status?: string
+          themenbereich?: string | null
+          titel?: string
+          verantwortliche_person?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
