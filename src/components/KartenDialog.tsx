@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { KontaktListe } from "@/components/KontaktListe";
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import {
@@ -200,6 +201,8 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
             />
           </div>
         </div>
+
+        <KontaktListe partnerorganisation={werte.partnerorganisation ?? null} />
 
         {projekt ? (
           <div className="rounded-lg border border-border bg-surface px-3 py-2">
