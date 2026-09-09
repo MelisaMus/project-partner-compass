@@ -265,6 +265,72 @@ function Board() {
                               {fristLabel(naechsterMeilenstein.frist)})
                             </p>
                           ) : null}
+
+                          {karteMeilensteine.length > 0 ? (
+                            <ul className="mt-2 space-y-1">
+                              {karteMeilensteine.slice(0, 4).map((m) => (
+                                <li
+                                  key={m.id}
+                                  className="flex items-center justify-between gap-2 text-[11px]"
+                                >
+                                  <span
+                                    className={`min-w-0 truncate ${m.erledigt ? "text-muted-foreground line-through" : ""}`}
+                                  >
+                                    {m.titel}
+                                  </span>
+                                  <span
+                                    className={`shrink-0 rounded-full px-1.5 py-0.5 font-medium ${
+                                      m.erledigt
+                                        ? "bg-secondary text-secondary-foreground"
+                                        : AMPEL_KLASSEN[fristAmpel(m.frist)]
+                                    }`}
+                                  >
+                                    {fristLabel(m.frist)}
+                                  </span>
+                                </li>
+                              ))}
+                              {karteMeilensteine.length > 4 ? (
+                                <li className="text-[11px] text-muted-foreground">
+                                  + {karteMeilensteine.length - 4} weitere
+                                </li>
+                              ) : null}
+                            </ul>
+                          ) : null}
+
+                          <div
+                            className="mt-2 border-t border-border pt-2"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPlanerOffen((alt) => {
+                                  const neu = new Set(alt);
+                                  if (neu.has(karte.id)) neu.delete(karte.id);
+                                  else neu.add(karte.id);
+                                  return neu;
+                                })
+                              }
+                              aria-expanded={planerOffen.has(karte.id)}
+                              className="text-[11px] font-medium text-primary hover:underline"
+                            >
+                              {planerOffen.has(karte.id) ? "Planer schließen" : "Milestones planen"}
+                            </button>
+                            <Link
+                              to="/uebersicht"
+                              className="ml-3 text-[11px] text-muted-foreground hover:underline"
+                            >
+                              In Übersicht öffnen
+                            </Link>
+                            {planerOffen.has(karte.id) ? (
+                              <div className="mt-2 rounded-md bg-surface px-2 py-1">
+                                <MeilensteinPlaner
+                                  projektId={karte.id}
+                                  meilensteine={karteMeilensteine}
+                                />
+                              </div>
+                            ) : null}
+                          </div>
                         </article>
                       );
                     })}
