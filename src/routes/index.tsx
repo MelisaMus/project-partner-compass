@@ -190,13 +190,17 @@ function Board() {
                       statusVerschieben.mutate({ id: karte.id, status: spalte });
                     }
                   }}
-                  className={`w-72 shrink-0 rounded-xl border p-3 transition-colors ${
-                    zielSpalte === spalte ? "border-primary bg-secondary" : "border-border bg-surface"
+                  className={`w-80 shrink-0 rounded-2xl border p-4 transition-colors ${
+                    zielSpalte === spalte
+                      ? "border-primary bg-accent/10"
+                      : "border-border bg-surface"
                   }`}
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <h2 className="text-sm font-semibold">{spalte}</h2>
-                    <span className="rounded-full bg-card px-2 py-0.5 text-xs text-muted-foreground">
+                  <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
+                    <h2 className="font-display text-sm font-bold uppercase tracking-wider text-secondary-foreground">
+                      {spalte}
+                    </h2>
+                    <span className="rounded-full bg-navy px-2.5 py-0.5 text-xs font-semibold text-navy-foreground">
                       {karten.length}
                     </span>
                   </div>
