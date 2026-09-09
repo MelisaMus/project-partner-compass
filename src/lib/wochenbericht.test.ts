@@ -82,6 +82,6 @@ describe("wochenberichtErstellen", () => {
       heute,
     );
     expect(bericht.anzahlOffeneMeilensteine).toBe(1);
-    expect(bericht.nachStatus[0].eintraege[0].meilensteine.map((m) => m.id)).toEqual(["m2", "m1"]);
+    expect(bericht.nachStatus[0]?.eintraege[0]?.meilensteine.map((m) => m.id)).toEqual(["m2", "m1"]);
   });
 });
