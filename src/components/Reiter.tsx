@@ -4,6 +4,7 @@ const REITER = [
   { to: "/", label: "Board" },
   { to: "/uebersicht", label: "Übersicht" },
   { to: "/partner", label: "Partner" },
+  { to: "/termine", label: "Termine" },
   { to: "/chat", label: "Chat" },
 ] as const;
 
