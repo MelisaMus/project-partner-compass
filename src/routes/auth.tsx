@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Compass } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -133,6 +133,12 @@ function AnmeldeSeite() {
         <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
           Der Zugang ist auf eingeladene Personen beschränkt. Eine eigene Registrierung ist nicht
           möglich – neue Zugänge werden im Backend angelegt.
+        </p>
+
+        <p className="mt-4 text-sm">
+          <Link to="/demo" className="text-teal underline-offset-4 hover:underline">
+            Demo-Einblick ohne Anmeldung ansehen
+          </Link>
         </p>
       </div>
     </main>

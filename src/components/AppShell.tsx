@@ -61,8 +61,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Anmeldeseiten brauchen keinen Dashboard-Rahmen.
-  if (pfad === "/auth" || pfad === "/passwort-neu") {
+  // Anmelde- und Demoseiten brauchen keinen Dashboard-Rahmen.
+  if (pfad === "/auth" || pfad === "/passwort-neu" || pfad === "/demo") {
     return <>{children}</>;
   }
 
