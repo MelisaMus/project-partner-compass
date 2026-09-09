@@ -3,9 +3,11 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { AlarmClock } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { AlarmEinstellungen } from "@/components/AlarmEinstellungen";
 import { FristAlarm } from "@/components/FristAlarm";
 import { Reiter } from "@/components/Reiter";
-import { ALARM_TAGE_FENSTER, fristAmpel, fristLabel, tageBisFrist } from "@/lib/fristen";
+import { useAlarmEinstellungen } from "@/lib/alarm-einstellungen";
+import { fristAmpel, fristLabel, tageBisFrist } from "@/lib/fristen";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import { projekteQueryOptions } from "@/lib/projekte";
 
@@ -41,6 +43,7 @@ function FristenSeite() {
   const { data: projekte = [], isLoading } = useQuery(projekteQueryOptions);
   const { data: meilensteine = [] } = useQuery(meilensteineQueryOptions);
   const [jetzt, setJetzt] = useState(() => new Date());
+  const [einstellungen] = useAlarmEinstellungen();
 
   useEffect(() => {
     const timer = window.setInterval(() => setJetzt(new Date()), 60_000);
@@ -51,7 +54,7 @@ function FristenSeite() {
     .filter((m) => {
       if (m.erledigt || !m.frist) return false;
       const tage = tageBisFrist(m.frist, jetzt);
-      return tage !== null && tage < ALARM_TAGE_FENSTER;
+      return tage !== null && tage < einstellungen.tageFenster;
     })
     .sort((a, b) => (a.frist ?? "").localeCompare(b.frist ?? ""));
 
@@ -68,7 +71,7 @@ function FristenSeite() {
             <div>
               <h1 className="text-2xl font-semibold">Frist-Alarm</h1>
               <p className="text-sm text-muted-foreground">
-                Überfällige und in weniger als {ALARM_TAGE_FENSTER} Tagen fällige Fristen –
+                Überfällige und in weniger als {einstellungen.tageFenster} Tagen fällige Fristen –
                 aktualisiert sich automatisch
               </p>
             </div>
@@ -88,7 +91,7 @@ function FristenSeite() {
           <h2 className="text-sm font-semibold">Meilensteine mit naher Frist</h2>
           {dringendeMeilensteine.length === 0 ? (
             <p className="mt-2 text-sm text-muted-foreground">
-              Keine Meilensteine in den nächsten {ALARM_TAGE_FENSTER} Tagen fällig.
+              Keine Meilensteine in den nächsten {einstellungen.tageFenster} Tagen fällig.
             </p>
           ) : (
             <ul className="mt-3 space-y-2">
