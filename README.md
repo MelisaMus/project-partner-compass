@@ -1,46 +1,20 @@
-# Welcome to your Lovable project
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
-
-## Project Partner Compass
+# Project Partner Compass
 
 Kanban-Board mit Chat-Abfrage zur Koordination von Teilprojekten mit internen und
 externen Partnerorganisationen und parallelen Fristen.
 
-### Bereiche der App
+Die App richtet sich an jede Art von Multi-Partner-Koordination – zum Beispiel
+transdisziplinäre Transferprojekte an Hochschulen – und beantwortet Fragen zum
+Projektstand direkt aus den Board-Daten, statt sich durch alle Karten zu klicken.
+
+## Funktionen
 
 Die Navigation ist in fünf Bereiche gegliedert (verwandte Seiten liegen als
 Unterreiter zusammen):
 
 | Bereich | Seiten | Inhalt |
 | --- | --- | --- |
-| Board | `/`, `/boards` | Kanban-Board mit Statusspalten; zusätzliche Boards/Projektkategorien |
+| Board | `/`, `/boards` | Kanban-Board mit Statusspalten und Drag & Drop; zusätzliche Boards/Projektkategorien |
 | Übersicht | `/uebersicht`, `/partner` | Projektliste gruppiert nach Status, Partner oder Frist inkl. Detailpanel, Dokumenten und Chat-Feld; Auswertung pro Partnerorganisation |
 | Termine & Fristen | `/termine`, `/fristen` | Meilenstein-Planer pro Projekt; Alarm für überfällige und bald fällige Fristen |
 | Chat | `/chat` | Fragen zum Projektstand mit Verlauf |
@@ -53,19 +27,81 @@ Unterreiter zusammen):
   Vorlaufzeit und Warnfarbe des Alarms sind einstellbar
 - Statusabfrage: Die Frage wird gemeinsam mit allen aktuellen Kartendaten als
   strukturierter Kontext an ein Sprachmodell geschickt (keine Vektorsuche).
-- Datenmodell (Lovable Cloud / Postgres): `projekte`, `meilensteine`, `boards`,
-  `dokumente`, `kontakte`; Dateien liegen im privaten Bucket `projekt-dokumente`.
 - Board, Übersicht und Termine teilen dieselben Daten und aktualisieren sich
   gegenseitig live.
-- Tests: `bun run test` (Vitest) für Fristen-, Wochenbericht-, PDF- und Kennzahlenlogik
 
-### Hinweise
+## Technischer Aufbau
+
+- **Frontend:** React 19, TypeScript, TanStack Start (Router + Server Functions), Vite
+- **Styling:** Tailwind CSS v4, Design-Tokens in `src/styles.css` (Farbwelt „Ocean Deep“,
+  Schriften Urbanist/Epilogue)
+- **Daten:** Lovable Cloud (Postgres/Supabase) mit Realtime-Synchronisierung
+- **Tests:** Vitest
+
+### Verzeichnisse
+
+```text
+src/routes/       Seiten (Board, Übersicht, Partner, Termine, Fristen, Chat, Berichte)
+src/components/   Seitenleiste, Kartendialog, Meilenstein-Planer, Chat-Panel u. a.
+src/lib/          Fristen-, Kennzahlen-, Wochenbericht- und PDF-Logik inkl. Tests
+supabase/         Migrationen des Datenmodells
+```
+
+### Datenmodell
+
+Tabellen: `projekte`, `meilensteine`, `boards`, `dokumente`, `kontakte`.
+Hochgeladene Dateien liegen in einem privaten Storage-Bucket `projekt-dokumente`.
+
+## Lokal starten
+
+Voraussetzung: Node.js 20+ (oder [Bun](https://bun.sh)).
+
+```sh
+git clone <repository-url>
+cd <repository-name>
+npm install
+npm run dev
+```
+
+Die App läuft anschließend auf `http://localhost:8080`.
+
+### Skripte
+
+| Befehl | Zweck |
+| --- | --- |
+| `npm run dev` | Entwicklungsserver |
+| `npm run build` | Produktions-Build |
+| `npm run test` | Vitest (Fristen-, Wochenbericht-, PDF- und Kennzahlenlogik) |
+
+### Umgebungsvariablen
+
+Für den lokalen Betrieb wird eine `.env` mit der Backend-Verbindung benötigt:
+
+```text
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_PUBLISHABLE_KEY=...
+VITE_SUPABASE_PROJECT_ID=...
+```
+
+In Lovable werden diese Werte automatisch gesetzt. Die Chat-Abfrage läuft
+serverseitig über den Lovable AI Gateway (`LOVABLE_API_KEY`); dieser Schlüssel
+gehört ausschließlich in die Serverumgebung und niemals ins Repository.
+
+## Hinweise
 
 - **Alle Beispieldaten sind fiktiv.** Die Beispielkarten und Partnernamen sind frei
   erfunden; es sind keine echten Institutionen abgebildet.
 - Das Tool ist als **generisches Konzept für Multi-Partner-Projektkoordination**
   gedacht und nicht an eine bestimmte Institution gebunden.
-- Es gibt derzeit noch keine Nutzerverwaltung/Anmeldung (bewusst auf später
-  verschoben); die Karten sind daher für alle Besucher lesbar und bearbeitbar.
+- Es gibt derzeit **keine Nutzerverwaltung/Anmeldung** (bewusst auf später
+  verschoben). Solange sie fehlt, sind Karten, Kontakte und Dokumente für alle
+  Besucher der veröffentlichten App lesbar und bearbeitbar – bitte keine
+  vertraulichen Daten eintragen.
 - Der automatische E-Mail-Versand des Wochenberichts ist vorbereitet, aber noch
   nicht aktiv – dafür wird eine eigene Absender-Domain benötigt.
+
+## Entwicklung mit Lovable
+
+Dieses Projekt wurde mit [Lovable](https://lovable.dev) gebaut und ist mit GitHub
+synchronisiert: Änderungen in Lovable werden ins Repository committet, Pushes ins
+Repository erscheinen wieder im Lovable-Editor.
