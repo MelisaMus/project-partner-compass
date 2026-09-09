@@ -92,10 +92,13 @@ function DetailFeld({ label, wert }: { label: string; wert: string | null }) {
   );
 }
 
-function Zeile({ projekt }: { projekt: Projekt }) {
+function Zeile({ projekt, meilensteine }: { projekt: Projekt; meilensteine: Meilenstein[] }) {
   const ampel = fristAmpel(projekt.naechste_frist);
   const [offen, setOffen] = useState(false);
   const detailId = `details-${projekt.id}`;
+  const naechster = naechsterOffenerMeilenstein(meilensteine);
+  const offeneAnzahl = meilensteine.filter((m) => !m.erledigt).length;
+
 
   return (
     <li className="rounded-lg border border-border bg-card">
