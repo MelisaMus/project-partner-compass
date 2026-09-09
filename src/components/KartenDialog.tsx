@@ -31,6 +31,7 @@ import {
   type ProjektEingabe,
 } from "@/lib/projekte";
 import { OHNE_BOARD, boardsQueryOptions } from "@/lib/boards";
+import { useDarfBearbeiten } from "@/lib/rollen";
 
 type Props = {
   offen: boolean;
@@ -49,6 +50,7 @@ function zuEingabe(projekt: Projekt | null): ProjektEingabe {
 export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen }: Props) {
   const [werte, setWerte] = useState<ProjektEingabe>(() => zuEingabe(projekt));
   const [speichert, setSpeichert] = useState(false);
+  const darfBearbeiten = useDarfBearbeiten();
   const { data: boards } = useQuery(boardsQueryOptions);
   const { data: alleMeilensteine } = useQuery(meilensteineQueryOptions);
   const meilensteine = (alleMeilensteine ?? []).filter((m) => m.projekt_id === projekt?.id);
@@ -216,7 +218,7 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
 
         <DialogFooter className="gap-2 sm:justify-between">
           <div>
-            {projekt && onLoeschen ? (
+            {projekt && onLoeschen && darfBearbeiten ? (
               <Button variant="ghost" className="text-destructive" onClick={() => onLoeschen(projekt.id)}>
                 Karte löschen
               </Button>
@@ -226,9 +228,11 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
             <Button variant="outline" onClick={onClose}>
               Abbrechen
             </Button>
+            {darfBearbeiten ? (
             <Button onClick={absenden} disabled={speichert || !werte.titel.trim()}>
               {speichert ? "Speichern…" : "Speichern"}
             </Button>
+            ) : null}
           </div>
         </DialogFooter>
       </DialogContent>

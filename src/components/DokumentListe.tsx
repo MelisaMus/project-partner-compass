@@ -11,9 +11,11 @@ import {
   groesseText,
   type Dokument,
 } from "@/lib/dokumente";
+import { useDarfBearbeiten } from "@/lib/rollen";
 
 export function DokumentListe({ projektId }: { projektId: string }) {
   const queryClient = useQueryClient();
+  const darfBearbeiten = useDarfBearbeiten();
   const dateiFeld = useRef<HTMLInputElement>(null);
   const { data: dokumente = [], isLoading } = useQuery(dokumenteQueryOptions(projektId));
 
@@ -54,6 +56,8 @@ export function DokumentListe({ projektId }: { projektId: string }) {
           <Paperclip className="size-4 text-muted-foreground" aria-hidden />
           Dokumente
         </h4>
+        {darfBearbeiten ? (
+        <>
         <button
           type="button"
           onClick={() => dateiFeld.current?.click()}
@@ -77,6 +81,8 @@ export function DokumentListe({ projektId }: { projektId: string }) {
             e.target.value = "";
           }}
         />
+        </>
+        ) : null}
       </div>
 
       {isLoading ? (
@@ -104,6 +110,7 @@ export function DokumentListe({ projektId }: { projektId: string }) {
                 <span className="text-[11px] text-muted-foreground">
                   {groesseText(dokument.groesse)}
                 </span>
+                {darfBearbeiten ? (
                 <button
                   type="button"
                   onClick={() => loeschen.mutate(dokument)}
@@ -112,6 +119,7 @@ export function DokumentListe({ projektId }: { projektId: string }) {
                 >
                   <Trash2 className="size-4" aria-hidden />
                 </button>
+                ) : null}
               </span>
             </li>
           ))}
