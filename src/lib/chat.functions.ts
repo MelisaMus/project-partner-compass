@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
+
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 import { fristLabel, hatFristInnerhalb, tageBisFrist } from "./fristen";
 
