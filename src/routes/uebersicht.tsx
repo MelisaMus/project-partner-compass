@@ -16,6 +16,7 @@ import {
   type Meilenstein,
 } from "@/lib/meilensteine";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/uebersicht")({
   head: () => ({
@@ -38,12 +39,6 @@ export const Route = createFileRoute("/uebersicht")({
   component: Uebersicht,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-ampel-keine text-ampel-keine-foreground",
-};
 
 type Gruppierung = "status" | "partner" | "frist";
 

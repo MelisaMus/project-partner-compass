@@ -8,6 +8,7 @@ import { Reiter } from "@/components/Reiter";
 import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
 import { meilensteineQueryOptions, type Meilenstein } from "@/lib/meilensteine";
 import { projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/termine")({
   head: () => ({
@@ -30,12 +31,6 @@ export const Route = createFileRoute("/termine")({
   component: TerminePlanerSeite,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
 function datumText(frist: string | null): string {
   if (!frist) return "ohne Datum";

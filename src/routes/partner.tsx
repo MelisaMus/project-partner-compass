@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { Reiter } from "@/components/Reiter";
 import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/partner")({
   head: () => ({
@@ -29,12 +30,6 @@ export const Route = createFileRoute("/partner")({
   component: PartnerSeite,
 });
 
-const AMPEL_KLASSEN = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-ampel-keine text-ampel-keine-foreground",
-} as const;
 
 type PartnerGruppe = {
   partner: string;

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 import {
   meilensteinAktualisieren,
   meilensteinAnlegen,
@@ -13,12 +14,6 @@ import {
   type Meilenstein,
 } from "@/lib/meilensteine";
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
 function datumText(frist: string | null): string {
   if (!frist) return fristLabel(frist);
