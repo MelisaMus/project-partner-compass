@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExportRouteImport } from './routes/export'
 import { Route as FristenRouteImport } from './routes/fristen'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as PasswortNeuRouteImport } from './routes/passwort-neu'
 import { Route as WochenberichtRouteImport } from './routes/wochenbericht'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedBerichteRouteImport } from './routes/_authenticated/berichte'
@@ -44,6 +45,11 @@ const FristenRoute = FristenRouteImport.update({
 const PartnerRoute = PartnerRouteImport.update({
   id: '/partner',
   path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswortNeuRoute = PasswortNeuRouteImport.update({
+  id: '/passwort-neu',
+  path: '/passwort-neu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WochenberichtRoute = WochenberichtRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
   '/berichte': typeof AuthenticatedBerichteRoute
   '/boards': typeof AuthenticatedBoardsRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
   '/berichte': typeof AuthenticatedBerichteRoute
   '/boards': typeof AuthenticatedBoardsRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/export': typeof ExportRoute
   '/fristen': typeof FristenRoute
   '/partner': typeof PartnerRoute
+  '/passwort-neu': typeof PasswortNeuRoute
   '/wochenbericht': typeof WochenberichtRoute
   '/_authenticated/berichte': typeof AuthenticatedBerichteRoute
   '/_authenticated/boards': typeof AuthenticatedBoardsRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/fristen'
     | '/partner'
+    | '/passwort-neu'
     | '/wochenbericht'
     | '/berichte'
     | '/boards'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/fristen'
     | '/partner'
+    | '/passwort-neu'
     | '/wochenbericht'
     | '/berichte'
     | '/boards'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/fristen'
     | '/partner'
+    | '/passwort-neu'
     | '/wochenbericht'
     | '/_authenticated/berichte'
     | '/_authenticated/boards'
@@ -172,6 +184,7 @@ export interface RootRouteChildren {
   ExportRoute: typeof ExportRoute
   FristenRoute: typeof FristenRoute
   PartnerRoute: typeof PartnerRoute
+  PasswortNeuRoute: typeof PasswortNeuRoute
   WochenberichtRoute: typeof WochenberichtRoute
 }
 
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/partner'
       fullPath: '/partner'
       preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passwort-neu': {
+      id: '/passwort-neu'
+      path: '/passwort-neu'
+      fullPath: '/passwort-neu'
+      preLoaderRoute: typeof PasswortNeuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wochenbericht': {
@@ -291,6 +311,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExportRoute: ExportRoute,
   FristenRoute: FristenRoute,
   PartnerRoute: PartnerRoute,
+  PasswortNeuRoute: PasswortNeuRoute,
   WochenberichtRoute: WochenberichtRoute,
 }
 export const routeTree = rootRouteImport
