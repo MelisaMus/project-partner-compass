@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 const REITER = [
   { to: "/", label: "Board" },
   { to: "/uebersicht", label: "Übersicht" },
+  { to: "/boards", label: "Boards" },
   { to: "/partner", label: "Partner" },
   { to: "/termine", label: "Termine" },
   { to: "/chat", label: "Chat" },

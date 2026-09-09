@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ import {
   type Projekt,
   type ProjektEingabe,
 } from "@/lib/projekte";
+import { OHNE_BOARD, boardsQueryOptions } from "@/lib/boards";
 
 type Props = {
   offen: boolean;
@@ -44,6 +46,7 @@ function zuEingabe(projekt: Projekt | null): ProjektEingabe {
 export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen }: Props) {
   const [werte, setWerte] = useState<ProjektEingabe>(() => zuEingabe(projekt));
   const [speichert, setSpeichert] = useState(false);
+  const { data: boards } = useQuery(boardsQueryOptions);
 
   useEffect(() => {
     if (offen) setWerte(zuEingabe(projekt));
@@ -151,6 +154,26 @@ export function KartenDialog({ offen, projekt, onClose, onSpeichern, onLoeschen 
               value={werte.naechste_frist ?? ""}
               onChange={(e) => setFeld("naechste_frist", e.target.value || null)}
             />
+          </div>
+
+          <div className="grid gap-2">
+            <Label>Board / Projektkategorie</Label>
+            <Select
+              value={werte.board_id ?? OHNE_BOARD}
+              onValueChange={(v) => setFeld("board_id", v === OHNE_BOARD ? null : v)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={OHNE_BOARD}>Ohne Board</SelectItem>
+                {(boards ?? []).map((board) => (
+                  <SelectItem key={board.id} value={board.id}>
+                    {board.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid gap-2 sm:col-span-2">
