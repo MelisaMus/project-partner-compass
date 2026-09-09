@@ -118,8 +118,21 @@ async function berichtErzeugen(daten: BerichtDaten) {
   zeile("Hinweis: Beispielprojekte in dieser App sind fiktiv.", 8);
 
   const dateiname = berichtDateiname(projekt.titel);
+  return { doc, dateiname };
+}
+
+/** Erzeugt den Partnerbericht als PDF und startet den Download im Browser. */
+export async function projektBerichtExportieren(daten: BerichtDaten): Promise<string> {
+  const { doc, dateiname } = await berichtErzeugen(daten);
   doc.save(dateiname);
   return dateiname;
+}
+
+/** Erzeugt den Partnerbericht als PDF-Datei, z. B. zum Ablegen bei den Projektdokumenten. */
+export async function berichtPdfDatei(daten: BerichtDaten): Promise<File> {
+  const { doc, dateiname } = await berichtErzeugen(daten);
+  const blob = doc.output("blob") as Blob;
+  return new File([blob], dateiname, { type: "application/pdf" });
 }
 
 export { datumText };
