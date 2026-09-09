@@ -12,8 +12,9 @@ import { Projektsituation } from "@/components/Projektsituation";
 
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { fristAmpel, fristLabel, hatFristInnerhalb, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel, hatFristInnerhalb } from "@/lib/fristen";
 import { meilensteineQueryOptions, naechsterOffenerMeilenstein } from "@/lib/meilensteine";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 import {
   STATUS_SPALTEN,
   projektAktualisieren,
@@ -46,12 +47,6 @@ export const Route = createFileRoute("/")({
   component: Board,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-ampel-keine text-ampel-keine-foreground",
-};
 
 function Kachel({
   icon,

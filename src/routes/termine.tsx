@@ -5,9 +5,10 @@ import { useMemo } from "react";
 
 import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { Reiter } from "@/components/Reiter";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { meilensteineQueryOptions, type Meilenstein } from "@/lib/meilensteine";
 import { projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/termine")({
   head: () => ({
@@ -30,17 +31,7 @@ export const Route = createFileRoute("/termine")({
   component: TerminePlanerSeite,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
-function datumText(frist: string | null): string {
-  if (!frist) return "ohne Datum";
-  return new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
-}
 
 function TerminePlanerSeite() {
   const { data: projekte = [], isLoading, error } = useQuery(projekteQueryOptions);
@@ -119,7 +110,7 @@ function TerminePlanerSeite() {
                     </span>
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{datumText(termin.frist)}</span>
+                    <span className="text-xs text-muted-foreground">{datumText(termin.frist, "ohne Datum")}</span>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${AMPEL_KLASSEN[fristAmpel(termin.frist)]}`}
                     >

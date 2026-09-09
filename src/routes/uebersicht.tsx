@@ -9,13 +9,14 @@ import { MeilensteinPlaner } from "@/components/MeilensteinPlaner";
 import { PdfExportButton } from "@/components/PdfExportButton";
 import { Reiter } from "@/components/Reiter";
 import { Button } from "@/components/ui/button";
-import { fristAmpel, fristLabel, tageBisFrist, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel, tageBisFrist } from "@/lib/fristen";
 import {
   meilensteineQueryOptions,
   naechsterOffenerMeilenstein,
   type Meilenstein,
 } from "@/lib/meilensteine";
 import { STATUS_SPALTEN, projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN, fristText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/uebersicht")({
   head: () => ({
@@ -38,12 +39,6 @@ export const Route = createFileRoute("/uebersicht")({
   component: Uebersicht,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-ampel-keine text-ampel-keine-foreground",
-};
 
 type Gruppierung = "status" | "partner" | "frist";
 
@@ -86,11 +81,6 @@ function gruppen(projekte: Projekt[], modus: Gruppierung): { titel: string; kart
   }));
 }
 
-function fristText(frist: string | null): string {
-  if (!frist) return fristLabel(frist);
-  const datum = new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
-  return `${datum} · ${fristLabel(frist)}`;
-}
 
 function DetailFeld({ label, wert }: { label: string; wert: string | null }) {
   return (

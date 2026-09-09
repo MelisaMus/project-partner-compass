@@ -5,10 +5,11 @@ import { useMemo, useState } from "react";
 
 import { Reiter } from "@/components/Reiter";
 import { useAlarmEinstellungen } from "@/lib/alarm-einstellungen";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import { projekteQueryOptions } from "@/lib/projekte";
 import { wochenberichtErstellen, type BerichtGruppe } from "@/lib/wochenbericht";
+import { AMPEL_KLASSEN, datumText } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/wochenbericht")({
   head: () => ({
@@ -32,12 +33,6 @@ export const Route = createFileRoute("/wochenbericht")({
   component: WochenberichtSeite,
 });
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
 const GRUPPIERUNGEN = [
   { schluessel: "status", label: "Nach Status" },
@@ -47,15 +42,6 @@ const GRUPPIERUNGEN = [
 
 type Gruppierung = (typeof GRUPPIERUNGEN)[number]["schluessel"];
 
-function datumText(wert: string | null): string {
-  if (!wert) return "–";
-  return new Date(`${wert.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}
 
 function WochenberichtSeite() {
   const [gruppierung, setGruppierung] = useState<Gruppierung>("status");

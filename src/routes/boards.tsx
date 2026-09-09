@@ -17,6 +17,7 @@ import {
 import { OHNE_BOARD, boardAnlegen, boardLoeschen, boardsQueryOptions } from "@/lib/boards";
 import { fristAmpel, fristLabel } from "@/lib/fristen";
 import { projektAktualisieren, projekteQueryOptions, type Projekt } from "@/lib/projekte";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
 export const Route = createFileRoute("/boards")({
   head: () => ({
@@ -40,12 +41,6 @@ export const Route = createFileRoute("/boards")({
   component: BoardsSeite,
 });
 
-const AMPEL_KLASSEN = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-ampel-keine text-ampel-keine-foreground",
-} as const;
 
 function BoardsSeite() {
   const queryClient = useQueryClient();

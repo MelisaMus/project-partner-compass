@@ -10,13 +10,8 @@ import { useAlarmEinstellungen } from "@/lib/alarm-einstellungen";
 import { fristAmpel, fristLabel, tageBisFrist } from "@/lib/fristen";
 import { meilensteineQueryOptions } from "@/lib/meilensteine";
 import { projekteQueryOptions } from "@/lib/projekte";
+import { AMPEL_KLASSEN } from "@/lib/darstellung";
 
-const AMPEL_KLASSEN: Record<string, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
 export const Route = createFileRoute("/fristen")({
   head: () => ({

@@ -5,7 +5,8 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fristAmpel, fristLabel, type FristAmpel } from "@/lib/fristen";
+import { fristAmpel } from "@/lib/fristen";
+import { AMPEL_KLASSEN, fristText } from "@/lib/darstellung";
 import {
   meilensteinAktualisieren,
   meilensteinAnlegen,
@@ -13,18 +14,7 @@ import {
   type Meilenstein,
 } from "@/lib/meilensteine";
 
-const AMPEL_KLASSEN: Record<FristAmpel, string> = {
-  gruen: "bg-ampel-gruen text-ampel-gruen-foreground",
-  gelb: "bg-ampel-gelb text-ampel-gelb-foreground",
-  rot: "bg-ampel-rot text-ampel-rot-foreground",
-  keine: "bg-secondary text-secondary-foreground",
-};
 
-function datumText(frist: string | null): string {
-  if (!frist) return fristLabel(frist);
-  const datum = new Date(`${frist.slice(0, 10)}T00:00:00Z`).toLocaleDateString("de-DE");
-  return `${datum} · ${fristLabel(frist)}`;
-}
 
 export function MeilensteinPlaner({
   projektId,
@@ -116,7 +106,7 @@ export function MeilensteinPlaner({
                   ) : null}
                 </span>
                 <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${AMPEL_KLASSEN[ampel]}`}>
-                  {m.erledigt ? "erledigt" : datumText(m.frist)}
+                  {m.erledigt ? "erledigt" : fristText(m.frist)}
                 </span>
                 <button
                   type="button"
