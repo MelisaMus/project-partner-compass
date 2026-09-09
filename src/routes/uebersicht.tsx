@@ -243,7 +243,11 @@ function Uebersicht() {
             ) : (
               <ul className="space-y-2">
                 {abschnitt.karten.map((p) => (
-                  <Zeile key={p.id} projekt={p} />
+                  <Zeile
+                    key={p.id}
+                    projekt={p}
+                    meilensteine={meilensteineJeProjekt.get(p.id) ?? []}
+                  />
                 ))}
               </ul>
             )}
